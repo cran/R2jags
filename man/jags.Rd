@@ -1,0 +1,166 @@
+\name{jags}
+\docType{class}
+% Classes
+\alias{rjags-class}
+% functions
+\alias{jags}
+\alias{jags2}
+
+
+\title{Run jags from R}
+\description{
+  The \code{jags} function takes data and starting values as input.  It
+  automatically writes a \code{jags} script, calls the model, and
+  saves the simulations for easy access in R.
+}
+
+\usage{
+jags(data, inits, parameters.to.save, model.file="model.bug",
+  n.chains=3, n.iter=2000, n.burnin=floor(n.iter/2),
+  n.thin=max(1, floor((n.iter - n.burnin) / n.sims)),
+  n.sims = 1000, n.adapt = 1000, DIC=FALSE, 
+  working.directory=NULL)
+
+
+jags2(data, inits, parameters.to.save, model.file="model.bug",
+  n.chains=3, n.iter=2000, n.burnin=floor(n.iter/2),
+  n.thin=max(1, floor((n.iter - n.burnin) / n.sims)),
+  n.sims = 1000, DIC=TRUE,
+  jags.path="", working.directory=NULL, clearWD=TRUE)
+}
+
+
+\arguments{
+  \item{data}{a vector or list of the names of the data objects used by
+    the model.}
+  \item{inits}{a list with \code{n.chains} elements; each element of the
+    list is itself a list of starting values for the \code{BUGS} model,
+    \emph{or} a function creating (possibly random) initial values.}
+  \item{parameters.to.save}{character vector of the names of the
+    parameters to save which should be monitored.}
+  \item{model.file}{file containing the model written in \code{BUGS} code.}
+  \item{n.chains}{number of Markov chains (default: 3)}
+  \item{n.iter}{number of total iterations per chain (including burn in;
+    default: 2000)}
+  \item{n.burnin}{length of burn in, i.e. number of iterations to
+    discard at the beginning. Default is \code{n.iter/2}, that is,
+    discarding the first half of the simulations.}
+  \item{n.thin}{thinning rate. Must be a positive integer.  Set
+    \code{n.thin} > 1 to save memory and computation time if
+    \code{n.iter} is large.  Default is \code{max(1, floor(n.chains *
+    (n.iter-n.burnin) / 1000))} which will only thin if there are at
+    least 2000 simulations.}
+  \item{n.sims}{The approximate number of simulations to keep after thinning.}
+  \item{n.adapt}{the number of iterations for adaptation.  When a model is
+          first created, some of the samplers may have an adaptive
+          mode. In this case, the samplers are run for \code{n.adapt}
+          iterations and then the adaptive mode is switched off.}
+  \item{DIC}{logical; if \code{TRUE} (default), compute deviance, pD,
+    and DIC. The rule \code{pD=var(deviance) / 2} is used.}
+  \item{working.directory}{sets working directory during execution of
+    this function; This should be the directory where model file is.}
+  \item{jags.path}{directory that contains the \pkg{jags} executable.
+    The default is "".  }
+  \item{clearWD}{indicating whether the files \file{data.txt},
+    \file{inits[1:n.chains].txt}, \file{codaIndex.txt}, \file{jagsscript.txt},
+    and \file{CODAchain[1:nchains].txt} should be removed after \pkg{jags} has
+    finished, default=TRUE.}
+}
+
+
+
+\details{
+  To run:
+  \enumerate{
+    \item Write a \pkg{BUGS} model in an ASCII file.
+    \item Go into \R.
+    \item Prepare the inputs for the \code{bugs} function and run it (see
+      Example section).
+    \item The model will now run in \pkg{jags}. It might take awhile. You
+    will see things happening in the R console.
+  }
+
+  BUGS version support:
+  \itemize{
+    \item{\pkg{jags} 1.0.2}{default}
+  }
+
+  Operation system support:
+  \itemize{
+    \item{\pkg{MS Windows}}{no problem}
+  }
+
+}
+
+\author{ 
+  Yu-Sung Su \email{ys463@columbia.edu},
+  Masanao Yajima \email{yajima@stat.columbia.edu}
+}
+
+
+\references{   
+    Plummer, Martyn (2003) 
+    "JAGS: A program for analysis of Bayesian graphical models using Gibbs sampling."
+    \url{http://citeseer.ist.psu.edu/plummer03jags.html}.
+
+    Gelman, A., Carlin, J.B., Stern, H.S., Rubin, D.B. (2003):
+    \emph{Bayesian Data Analysis}, 2nd edition, CRC Press.
+
+}
+
+
+
+
+\examples{
+  # An example model file is given in:
+  model.file <- system.file(package="R2jags", "model", "schools.txt")
+  # Let's take a look:
+  file.show(model.file)
+
+  # data
+  J <- 8.0
+  y <- c(28.4,7.9,-2.8,6.8,-0.6,0.6,18.0,12.2)
+  sd <- c(14.9,10.2,16.3,11.0,9.4,11.4,10.4,17.6)
+
+  jags.data <- list("y","sd","J")
+  jags.params <- c("mu","sigma","theta")
+  jags.inits <- function(){
+    list("mu"=rnorm(1),"sigma"=runif(1),"theta"=rnorm(J))
+  }
+  
+#=============#
+# using jags  #
+#=============#
+  jagsfit <- jags(data=jags.data, inits=jags.inits, jags.params, 
+    n.iter=5000, model.file=model.file)
+  print(jagsfit)
+  plot(jagsfit)
+  
+  # if the model does not converge, update it!
+  jagsfit.upd <- update(jagsfit, n.iter=1000)
+  print(jagsfit.upd)
+  plot(jagsfit.upd)
+  
+  # or auto update it until it converges!
+  jagsfit.upd <- autojags(jagsfit)
+    
+  # to get DIC
+  dic.samples(jagsfit.upd$model, n.iter=1000, type="pD")
+
+#=============#
+# using jags2 #
+#=============#
+  ## jags cannot be updated, but produces coda files
+  ## You may need to edit "jags.path",
+  ## also you need write access in the working directory:
+  ## currently works only under Windows OS
+  ## e.g. setwd("c:/")
+  
+  #jagsfit <- jags2(data=jags.data, inits=jags.inits, jags.params, 
+  #  n.iter=5000, model.file=model.file)
+  #print(jagsfit)
+  #plot(jagsfit)
+}
+
+\keyword{interface}
+\keyword{models}

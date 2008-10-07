@@ -1,0 +1,17 @@
+2008-10-7  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.01-11.
+    * R/Allclass: explicitly using setOldClass from methods::
+    * prepare to release! 
+
+
+
+2008-8-18  Ben Bolker <bolker@zoology.ufl.edu>
+    * DESCRIPTION (Version, Date): 0.01-10.
+    * R/jags: 
+        1. change pos=parent.frame(1)
+        2. add envir=parent.frame(1) in data dumping
+
+
+2008-5-7  Yu-Sung Su     <ys463@columbia.edu>  
+          Masanao Yajima <yajima@stat.columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.01-1.
