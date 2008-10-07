@@ -4,8 +4,6 @@
 #importFrom(rjags,coda.samples)
 
 
-#import(rjags)
-
 exportClasses(
               "rjags"              
               )
@@ -15,10 +13,11 @@ export(
        "autojags",
        "jags",
        "jags2",
-       "jags2bugs"
+       "jags2bugs",
+       "recompile"
 )
 
-
+S3method("recompile", "rjags")
 S3method("plot", "rjags")
 S3method("print", "rjags")
 S3method("update", "rjags")

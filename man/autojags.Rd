@@ -3,6 +3,7 @@
 \alias{autojags}
 
 
+
 \title{Function for auto-updating jags until the model converges}
 \description{
 The \code{autojags} takes a \code{rjags} object as input.  
@@ -11,9 +12,8 @@ The \code{autojags} takes a \code{rjags} object as input.
 
 \usage{
 
-\method{update}{rjags}(object, n.iter=1000, n.thin=1, \ldots)
-
-autojags(object, n.iter=1000, n.thin=1, Rhat=1.1, n.update=2, \ldots)
+\method{update}{rjags}(object, n.iter=1000, n.thin=1, \dots)
+autojags(object, n.iter=1000, n.thin=1, Rhat=1.1, n.update=2, \dots)
 
 }
 
@@ -22,7 +22,7 @@ autojags(object, n.iter=1000, n.thin=1, Rhat=1.1, n.update=2, \ldots)
   \item{object}{an object of \code{rjags} class.}
   \item{n.iter}{number of total iterations per chain, default=1000}
   \item{n.thin}{thinning rate. Must be a positive integer, default=1}
-  \item{\ldots}{further arguments pass to or from other methods.}
+  \item{\dots}{further arguments pass to or from other methods.}
   \item{Rhat}{converegence criterion, default=1.1.}
   \item{n.update}{the max number of updates, default=2.}
 }

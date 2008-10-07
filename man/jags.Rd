@@ -147,6 +147,12 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   # to get DIC
   dic.samples(jagsfit.upd$model, n.iter=1000, type="pD")
 
+  # to pick up the last save session
+  # for example, load("RWorkspace.Rdata")
+  recompile(jagsfit)
+  jagsfit.upd <- update(jagsfit)
+
+
 #=============#
 # using jags2 #
 #=============#

@@ -1,5 +1,5 @@
 Package: R2jags
-Version: 0.01-11
+Version: 0.01-12
 Date: 2008-10-7
 Title: R2jags: A Package for Running jags from R
 Author: Yu-Sung Su <ys463@columbia.edu>,
@@ -9,4 +9,4 @@ Depends: methods, R(>= 2.7.0), coda, R2WinBUGS, rjags(>= 1.0.3)
 SystemRequirements: jags (>= 1.0.3)
 Description: Using this package to call jags from R.
 License: GPL (>= 2)
-Packaged: Thu Oct  9 00:16:01 2008; SUYS
+Packaged: Fri Oct 17 11:08:36 2008; SUYS

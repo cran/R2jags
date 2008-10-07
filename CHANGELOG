@@ -1,3 +1,9 @@
+2008-10-17  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.01-12.
+    * man/recompile: documentation for recompile.
+    * R/recompile: new function to pick up previous saved rjags object.
+
+
 2008-10-7  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.01-11.
     * R/Allclass: explicitly using setOldClass from methods::
