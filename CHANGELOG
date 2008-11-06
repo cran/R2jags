@@ -1,3 +1,8 @@
+2008-11-6  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.01-13.
+    * R/recompile: update set to 100 to ensure complete adaptation
+
+
 2008-10-17  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.01-12.
     * man/recompile: documentation for recompile.
