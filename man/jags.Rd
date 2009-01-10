@@ -35,7 +35,8 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
     the model.}
   \item{inits}{a list with \code{n.chains} elements; each element of the
     list is itself a list of starting values for the \code{BUGS} model,
-    \emph{or} a function creating (possibly random) initial values.}
+    \emph{or} a function creating (possibly random) initial values. If inits is 
+    \code{NULL}, \pkg{JAGS} will generate initial values for parameters.}
   \item{parameters.to.save}{character vector of the names of the
     parameters to save which should be monitored.}
   \item{model.file}{file containing the model written in \code{BUGS} code.}
@@ -74,9 +75,9 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   \enumerate{
     \item Write a \pkg{BUGS} model in an ASCII file.
     \item Go into \R.
-    \item Prepare the inputs for the \code{bugs} function and run it (see
+    \item Prepare the inputs for the \code{jags} function and run it (see
       Example section).
-    \item The model will now run in \pkg{jags}. It might take awhile. You
+    \item The model will now run in \pkg{JAGS}. It might take awhile. You
       will see things happening in the R console.
   }
 
@@ -97,7 +98,7 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
     \dQuote{JAGS: A program for analysis of Bayesian graphical models using Gibbs sampling.}
     \url{http://citeseer.ist.psu.edu/plummer03jags.html}.
     
-    Gelman, A., Carlin, J.B., Stern, H.S., Rubin, D.B. (2003)
+    Gelman, A., Carlin, J. B., Stern, H.S., Rubin, D.B. (2003)
     \emph{Bayesian Data Analysis}, 2nd edition, CRC Press.
 
     Sibylle Sturtz and Uwe Ligges and Andrew Gelman. (2005). 

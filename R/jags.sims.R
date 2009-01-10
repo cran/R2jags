@@ -38,19 +38,25 @@ jags.sims <- function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
   for (j in 1:n.roots) {
       long.short[[j]] <- (1:n.parameters)[root.long == root.short[j]]
       length.short[j] <- length(long.short[[j]])
-      if (length.short[j] == 0) 
+      if (length.short[j] == 0) {
           stop(paste("parameter", root.short[[j]], "is not in the model"))
+      }
       else if (length.short[j] > 1) {
           dimension.short[j] <- length(indexes.long[[long.short[[j]][1]]])
           n.indexes.short[[j]] <- numeric(dimension.short[j])
-          for (k in 1:dimension.short[j]) n.indexes.short[[j]][k] <- length(unique(unlist(lapply(indexes.long[long.short[[j]]], 
+          for (k in 1:dimension.short[j]){
+            n.indexes.short[[j]][k] <- length(unique(unlist(lapply(indexes.long[long.short[[j]]], 
               .subset, k))))
+          }
           length.short[j] <- prod(n.indexes.short[[j]])
-          if (length(long.short[[j]]) != length.short[j]) 
+          if (length(long.short[[j]]) != length.short[j]){ 
               stop(paste("error in parameter", root.short[[j]], 
                 "in parameters.to.save"))
+          }
           indexes.short[[j]] <- as.list(numeric(length.short[j]))
-          for (k in 1:length.short[j]) indexes.short[[j]][[k]] <- indexes.long[[long.short[[j]][k]]]
+          for (k in 1:length.short[j]){
+            indexes.short[[j]][[k]] <- indexes.long[[long.short[[j]][k]]]
+          }
       }
   }
   rank.long <- unlist(long.short)
@@ -80,9 +86,11 @@ jags.sims <- function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
                 long.short[[j]]]
               names(last.values[[i]][[j]]) <- NULL
           }
-          else last.values[[i]][[j]] <- aperm(array(sims.array[n.keep, 
-              i, long.short[[j]]], rev(n.indexes.short[[j]])), 
-              dimension.short[j]:1)
+          else{
+            last.values[[i]][[j]] <- aperm(array(sims.array[n.keep, 
+                i, long.short[[j]]], rev(n.indexes.short[[j]])), 
+                dimension.short[j]:1)
+          }
       }
   }
   sims <- sims[sample(n.sims), , drop = FALSE]
@@ -135,3 +143,5 @@ jags.sims <- function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
   }
   all
 }
+
+if(!is.R()) .subset <- function(x, index) x[index]
