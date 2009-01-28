@@ -44,7 +44,9 @@ jags <- function (data, inits, parameters.to.save, model.file = "model.bug",
   m <- jags.model(model.file, data = data, inits = inits, nchain = n.chains, 
       n.adapt = n.adapt)
   
-  update(m, n.burnin)
+  if(n.burnin > 0){
+    update(m, n.burnin)
+  }
   
   samples <- coda.samples(model = m, variable.names = parameters.to.save, 
       n.iter = (n.iter-n.burnin), thin = n.thin)

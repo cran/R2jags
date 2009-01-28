@@ -1,4 +1,10 @@
 2008-11-6  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.01-14.
+    * R/traceplot: add traceplot generic and rjags method
+    * R/jags: fix the bug when n.burnin=0
+
+
+2008-11-6  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.01-13.
     * R/recompile: update set to 100 to ensure complete adaptation
 

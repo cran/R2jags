@@ -1,5 +1,6 @@
 methods::setOldClass("jags")
 methods::setOldClass("bugs")
+methods::setOldClass("mcmc.list")
 
 methods::setClass("rjags",
      representation(

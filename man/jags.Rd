@@ -60,7 +60,7 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   \item{working.directory}{sets working directory during execution of
     this function; This should be the directory where model file is.}
   \item{jags.path}{directory that contains the \pkg{jags} executable.
-    The default is "".  }
+    The default is \dQuote{}.  }
   \item{clearWD}{indicating whether the files \file{data.txt},
     \file{inits[1:n.chains].txt}, \file{codaIndex.txt}, \file{jagsscript.txt},
     and \file{CODAchain[1:nchains].txt} should be removed after \pkg{jags} has
@@ -77,19 +77,13 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
     \item Prepare the inputs for the \code{bugs} function and run it (see
       Example section).
     \item The model will now run in \pkg{jags}. It might take awhile. You
-    will see things happening in the R console.
+      will see things happening in the R console.
   }
 
   BUGS version support:
   \itemize{
-    \item{\pkg{jags} 1.0.2}{default}
+    \item{\pkg{jags} 1.0.3}{default}
   }
-
-  Operation system support:
-  \itemize{
-    \item{\pkg{MS Windows}}{no problem}
-  }
-
 }
 
 \author{ 
@@ -100,12 +94,15 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
 
 \references{   
     Plummer, Martyn (2003) 
-    "JAGS: A program for analysis of Bayesian graphical models using Gibbs sampling."
+    \dQuote{JAGS: A program for analysis of Bayesian graphical models using Gibbs sampling.}
     \url{http://citeseer.ist.psu.edu/plummer03jags.html}.
-
-    Gelman, A., Carlin, J.B., Stern, H.S., Rubin, D.B. (2003):
+    
+    Gelman, A., Carlin, J.B., Stern, H.S., Rubin, D.B. (2003)
     \emph{Bayesian Data Analysis}, 2nd edition, CRC Press.
 
+    Sibylle Sturtz and Uwe Ligges and Andrew Gelman. (2005). 
+      \dQuote{R2WinBUGS: A Package for Running WinBUGS from R.}
+      \emph{Journal of Statistical Software} 3 (12): 1--6.
 }
 
 
@@ -133,18 +130,23 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
 #=============#
   jagsfit <- jags(data=jags.data, inits=jags.inits, jags.params, 
     n.iter=5000, model.file=model.file)
+    
+  # display the output
   print(jagsfit)
   plot(jagsfit)
+  
+  # traceplot
+  traceplot(jagsfit)
   
   # if the model does not converge, update it!
   jagsfit.upd <- update(jagsfit, n.iter=1000)
   print(jagsfit.upd)
   plot(jagsfit.upd)
   
-  # or auto update it until it converges!
+  # or auto update it until it converges! see ?autojags for details
   jagsfit.upd <- autojags(jagsfit)
     
-  # to get DIC
+  # to get DIC or specify DIC=TRUE in jags()
   dic.samples(jagsfit.upd$model, n.iter=1000, type="pD")
 
   # to pick up the last save session

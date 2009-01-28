@@ -8,6 +8,9 @@ exportClasses(
               "rjags"              
               )
 
+exportMethods(
+      "traceplot"
+)
 
 export(
        "autojags",
