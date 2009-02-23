@@ -1,3 +1,8 @@
+2009-2-23  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.01-16.
+    * R/jags: nchain --> n.chains (changed by rjags)
+
+
 2009-2-10  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.01-15.
     * R/jags: inits=NULL, let jags gen inits

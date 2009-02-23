@@ -42,11 +42,11 @@ jags <- function (data, inits, parameters.to.save, model.file = "model.bug",
   if (DIC){parameters.to.save <- c(parameters.to.save, "deviance")}
   
   if(is.null(inits)){
-    m <- jags.model(model.file, data = data, nchain = n.chains, 
+    m <- jags.model(model.file, data = data, n.chains = n.chains, 
       n.adapt = n.adapt)
   }
   else{ 
-    m <- jags.model(model.file, data = data, inits=inits, nchain = n.chains, 
+    m <- jags.model(model.file, data = data, inits=inits, n.chains = n.chains, 
       n.adapt = n.adapt)
   }
   
