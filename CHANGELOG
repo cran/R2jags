@@ -1,3 +1,9 @@
+2009-3-4  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.01-17.
+    * R/as.bugs.array2: provide by Eduardo Leoni to fix dimension problem of jags output.
+        (It is actually the problem of as.bugs.array.  JAGS simply returns different dimenstion.
+        So we need new as.bugs.array2 here.  Right now, keep it Internal, maybe export later!)
+
 2009-2-23  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.01-16.
     * R/jags: nchain --> n.chains (changed by rjags)
