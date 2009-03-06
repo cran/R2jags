@@ -11,8 +11,8 @@ The \code{recompile} takes a \code{rjags} object as input.
 
 \usage{
 
-recompile(object)
-\method{recompile}{rjags}(object)
+recompile(object, n.iter)
+\method{recompile}{rjags}(object, n.iter=100)
 
 
 }
@@ -20,6 +20,7 @@ recompile(object)
 
 \arguments{
   \item{object}{an object of \code{rjags} class.}
+  \item{n.iter}{number of iteration for adapting, default is 100}
 }
 
 

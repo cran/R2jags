@@ -12,7 +12,7 @@
 
 \usage{
 jags2bugs(path=getwd(), parameters.to.save, 
-  n.chains=3, n.iter=2000, n.burnin=1000, n.thin=2, 
+  n.chains=3, n.iter=2000, n.burnin=1000, n.thin=2,
   DIC=TRUE)
 }
 

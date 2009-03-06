@@ -1,4 +1,4 @@
-update.rjags <- function(object, n.iter=1000, n.thin=1, ...)
+update.rjags <- function(object, n.iter=1000, n.thin=1,...)
 {
   samples <- coda.samples(object$model, variable.names=object$parameters.to.save, n.iter=n.iter, thin = n.thin)
   fit <- mcmc2bugs(samples, model.file = object$model.file, program = "jags", DIC = object$DIC, #DICOutput = NULL, 

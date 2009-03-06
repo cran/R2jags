@@ -1,14 +1,14 @@
 autojags <- function(object, n.iter=1000, n.thin=1, Rhat=1.1, n.update=2, ...){
   if(class(object)!="rjags") stop("model must be a rjags object")
-    fit <- update(object, n.iter=n.iter, n.thin=n.thin, ...)
-    check <- ifelse(max(fit$BUGSoutput$summary[,"Rhat"]) > Rhat, 1, 0)
-    if (check > 0){
+    object <- update(object, n.iter=n.iter, n.thin=n.thin, ...)
+    check <- all(object$BUGSoutput$summary[,"Rhat"] > Rhat)
+    if (check){
       count <- 1
-      while (check > 0 & n.update >= count) {
-          fit <- update(fit, n.iter=n.iter, n.thin=n.thin, ...)
+      while (check & n.update >= count) {
+          object <- update(object, n.iter=n.iter, n.thin=n.thin, ...)
           count <- count + 1
-          check <- ifelse(max(fit$BUGSoutput$summary[,"Rhat"]) > Rhat, 1, 0)
+          check <- all(object$BUGSoutput$summary[,"Rhat"] > Rhat)
       }
     }
-    fit
+    return(object)
 }

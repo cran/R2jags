@@ -1,6 +1,7 @@
 jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug", 
   n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2), 
-  n.thin = max(1, floor((n.iter - n.burnin)/n.sims)), n.sims = 1000, 
+  n.thin = max(1, floor((n.iter - n.burnin)/n.sims)), n.sims=1000, 
+  refresh = n.iter/50,
   DIC = TRUE, jags.path = "", working.directory = NULL, clearWD = TRUE) 
 {
   if (!is.null(working.directory)) {
@@ -73,9 +74,9 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
       if(!no.inits){
       paste("inits in \"", inits.files, "\"\n", sep = "")}, 
       "initialize", "\n", 
-      "update ", n.burnin, "\n", 
+      "update ", n.burnin, ", by(", refresh, ")\n", 
       paste("monitor ", parameters.to.save, ", thin(", n.thin, ")\n", sep = ""),      
-      "update ", redo, "\n", 
+      "update ", redo, ", by(", refresh, ")\n", 
       "coda *\n", sep = "", file = "jagsscript.txt")
   
   system(paste(jags.call, "jagsscript.txt"))
