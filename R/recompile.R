@@ -1,8 +1,8 @@
-recompile <- function(object, n.iter) UseMethod("recompile")
+recompile <- function(object, n.iter, refresh) UseMethod("recompile")
 
 
-recompile.rjags <- function(object, n.iter=100){
+recompile.rjags <- function(object, n.iter=100, refresh=n.iter/50){
   object$model$recompile()
-  update(object$model, n.iter=n.iter) 
+  adapt(object$model, n.iter=n.iter, by=refresh) 
 }
   

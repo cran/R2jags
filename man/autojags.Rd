@@ -12,8 +12,8 @@ The \code{autojags} takes a \code{rjags} object as input.
 
 \usage{
 
-\method{update}{rjags}(object, n.iter=1000, n.thin=1, \dots)
-autojags(object, n.iter=1000, n.thin=1, Rhat=1.1, n.update=2, \dots)
+\method{update}{rjags}(object, n.iter=1000, n.thin=1, refresh=n.iter/50,  \dots)
+autojags(object, n.iter=1000, n.thin=1, Rhat=1.1, n.update=2, refresh=n.iter/50, \dots)
 
 }
 
@@ -25,6 +25,7 @@ autojags(object, n.iter=1000, n.thin=1, Rhat=1.1, n.update=2, \dots)
   \item{\dots}{further arguments pass to or from other methods.}
   \item{Rhat}{converegence criterion, default=1.1.}
   \item{n.update}{the max number of updates, default=2.}
+  \item{refresh}{refresh rate of the progress bar, default is \code{n.iter/50}}
 }
 
 

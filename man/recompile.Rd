@@ -11,8 +11,8 @@ The \code{recompile} takes a \code{rjags} object as input.
 
 \usage{
 
-recompile(object, n.iter)
-\method{recompile}{rjags}(object, n.iter=100)
+recompile(object, n.iter, refresh)
+\method{recompile}{rjags}(object, n.iter=100, refresh=n.iter/50)
 
 
 }
@@ -21,6 +21,7 @@ recompile(object, n.iter)
 \arguments{
   \item{object}{an object of \code{rjags} class.}
   \item{n.iter}{number of iteration for adapting, default is 100}
+  \item{refresh}{refresh rate of the progress bar, default is \code{n.iter/100}}
 }
 
 
