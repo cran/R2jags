@@ -18,15 +18,16 @@
 jags(data, inits, parameters.to.save, model.file="model.bug",
   n.chains=3, n.iter=2000, n.burnin=floor(n.iter/2),
   n.thin=max(1, floor((n.iter - n.burnin) / n.sims)),
-  n.sims = 1000, n.adapt = 1000, refresh = n.iter/50, DIC=FALSE, 
-  working.directory=NULL)
+  n.sims = 1000, n.adapt = 1000, DIC=FALSE, working.directory=NULL,
+  refresh = n.iter/50, progress.bar = "text")
 
 
 jags2(data, inits, parameters.to.save, model.file="model.bug",
   n.chains=3, n.iter=2000, n.burnin=floor(n.iter/2),
   n.thin=max(1, floor((n.iter - n.burnin) / n.sims)),
-  n.sims = 1000, refresh = n.iter/50, DIC=TRUE,
-  jags.path="", working.directory=NULL, clearWD=TRUE)
+  n.sims = 1000, DIC=TRUE, jags.path="", 
+  working.directory=NULL, clearWD=TRUE,
+  refresh = n.iter/50)
 }
 
 
@@ -52,7 +53,6 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
     (n.iter-n.burnin) / 1000))} which will only thin if there are at
     least 2000 simulations.}
   \item{n.sims}{The approximate number of simulations to keep after thinning.}
-  \item{refresh}{refresh rate of the progress bar, default is \code{n.iter/50}}
   \item{n.adapt}{the number of iterations for adaptation.  When a model is
           first created, some of the samplers may have an adaptive
           mode. In this case, the samplers are run for \code{n.adapt}
@@ -67,6 +67,12 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
     \file{inits[1:n.chains].txt}, \file{codaIndex.txt}, \file{jagsscript.txt},
     and \file{CODAchain[1:nchains].txt} should be removed after \pkg{jags} has
     finished, default=TRUE.}
+  \item{refresh}{refresh frequency for progress bar, default is \code{n.iter/50}}
+  \item{progress.bar}{type of progress bar. Possible values are \dQuote{text}, 
+      \dQuote{gui}, and \dQuote{none}. Type \dQuote{text} is displayed
+      on the R console. Type \dQuote{gui} is a graphical progress bar 
+      in a new window. The progress bar is suppressed if \code{progress.bar} is 
+      \dQuote{none}}
 }
 
 

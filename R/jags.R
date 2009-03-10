@@ -1,7 +1,8 @@
 jags <- function (data, inits, parameters.to.save, model.file = "model.bug", 
   n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2), 
   n.thin = max(1, floor((n.iter - n.burnin)/n.sims)), n.sims = 1000, 
-  n.adapt = 1000, refresh = n.iter/50, DIC = FALSE, working.directory = NULL) 
+  n.adapt = 1000, DIC = FALSE, working.directory = NULL, 
+  refresh = n.iter/50, progress.bar="text") 
 {
   
   require(rjags)
@@ -44,20 +45,21 @@ jags <- function (data, inits, parameters.to.save, model.file = "model.bug",
   if(is.null(inits)){
     m <- jags.model(model.file, data = data, n.chains = n.chains, 
       n.adapt = 0)
-    adapt(m, n.iter =  n.adapt, by = refresh) 
+    adapt(m, n.iter =  n.adapt, by = refresh, progress.bar = progress.bar) 
   }
   else{ 
     m <- jags.model(model.file, data = data, inits=inits, n.chains = n.chains, 
       n.adapt = 0)
-    adapt(m, n.iter =  n.adapt, by = refresh) 
+    adapt(m, n.iter =  n.adapt, by = refresh, progress.bar = progress.bar) 
   }
   
   if(n.burnin > 0){
-    update(m, n.burnin, by=refresh)
+    update(m, n.burnin, by = refresh, progress.bar = progress.bar)
   }
   
   samples <- coda.samples(model = m, variable.names = parameters.to.save, 
-      n.iter = (n.iter-n.burnin), thin = n.thin, by=refresh)
+      n.iter = (n.iter-n.burnin), thin = n.thin, by = refresh, 
+      progress.bar = progress.bar)
   
   fit <- mcmc2bugs(samples, model.file = model.file, program = "jags", 
       DIC = DIC, DICOutput = NULL, n.iter = n.iter, n.burnin = n.burnin, 

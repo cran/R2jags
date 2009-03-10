@@ -11,8 +11,9 @@ The \code{recompile} takes a \code{rjags} object as input.
 
 \usage{
 
-recompile(object, n.iter, refresh)
-\method{recompile}{rjags}(object, n.iter=100, refresh=n.iter/50)
+recompile(object, n.iter, refresh, progress.bar)
+\method{recompile}{rjags}(object, n.iter=100, refresh=n.iter/50, 
+    progress.bar = "text")
 
 
 }
@@ -21,7 +22,12 @@ recompile(object, n.iter, refresh)
 \arguments{
   \item{object}{an object of \code{rjags} class.}
   \item{n.iter}{number of iteration for adapting, default is 100}
-  \item{refresh}{refresh rate of the progress bar, default is \code{n.iter/100}}
+  \item{refresh}{refresh frequency for progress bar, default is \code{n.iter/50}}
+  \item{progress.bar}{type of progress bar. Possible values are \dQuote{text}, 
+      \dQuote{gui}, and \dQuote{none}. Type \dQuote{text} is displayed
+      on the R console. Type \dQuote{gui} is a graphical progress bar 
+      in a new window. The progress bar is suppressed if \code{progress.bar} is 
+      \dQuote{none}}
 }
 
 

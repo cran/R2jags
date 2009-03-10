@@ -1,3 +1,7 @@
+2009-3-10  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.01-21.
+    * pass option "progress.bar" to functions
+
 2009-3-8  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.01-20.
     * n.adpate in jags.model now set to 0 but use adapte() to adapte 

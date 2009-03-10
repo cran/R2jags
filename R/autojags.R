@@ -1,11 +1,15 @@
-autojags <- function(object, n.iter=1000, n.thin=1, Rhat=1.1, n.update=2, refresh=n.iter/50, ...){
+autojags <- function(object, n.iter=1000, n.thin=1, Rhat=1.1, n.update=2, refresh=n.iter/50, 
+    progress.bar = "text",...)
+{
   if(class(object)!="rjags") stop("model must be a rjags object")
-    object <- update(object, n.iter=n.iter, n.thin=n.thin, refresh=refresh,...)
+    object <- update(object, n.iter=n.iter, n.thin=n.thin, 
+                      refresh=refresh, progress.bar = progress.bar,...)
     check <- all(object$BUGSoutput$summary[,"Rhat"] > Rhat)
     if (check){
       count <- 1
       while (check & n.update >= count) {
-          object <- update(object, n.iter=n.iter, n.thin=n.thin, refresh=refresh,...)
+          object <- update(object, n.iter=n.iter, n.thin=n.thin, 
+                      refresh=refresh, progress.bar = progress.bar, ...)
           count <- count + 1
           check <- all(object$BUGSoutput$summary[,"Rhat"] > Rhat)
       }

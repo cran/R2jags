@@ -12,8 +12,10 @@ The \code{autojags} takes a \code{rjags} object as input.
 
 \usage{
 
-\method{update}{rjags}(object, n.iter=1000, n.thin=1, refresh=n.iter/50,  \dots)
-autojags(object, n.iter=1000, n.thin=1, Rhat=1.1, n.update=2, refresh=n.iter/50, \dots)
+\method{update}{rjags}(object, n.iter=1000, n.thin=1, 
+                      refresh=n.iter/50, progress.bar = "text", \dots)
+autojags(object, n.iter=1000, n.thin=1, Rhat=1.1, n.update=2, 
+      refresh=n.iter/50, progress.bar = "text", \dots)
 
 }
 
@@ -25,7 +27,12 @@ autojags(object, n.iter=1000, n.thin=1, Rhat=1.1, n.update=2, refresh=n.iter/50,
   \item{\dots}{further arguments pass to or from other methods.}
   \item{Rhat}{converegence criterion, default=1.1.}
   \item{n.update}{the max number of updates, default=2.}
-  \item{refresh}{refresh rate of the progress bar, default is \code{n.iter/50}}
+  \item{refresh}{refresh frequency for progress bar, default is \code{n.iter/50}}
+  \item{progress.bar}{type of progress bar. Possible values are \dQuote{text}, 
+      \dQuote{gui}, and \dQuote{none}. Type \dQuote{text} is displayed
+      on the R console. Type \dQuote{gui} is a graphical progress bar 
+      in a new window. The progress bar is suppressed if \code{progress.bar} is 
+      \dQuote{none}}
 }
 
 

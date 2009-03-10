@@ -1,8 +1,8 @@
 jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug", 
   n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2), 
   n.thin = max(1, floor((n.iter - n.burnin)/n.sims)), n.sims=1000, 
-  refresh = n.iter/50, 
-  DIC = TRUE, jags.path = "", working.directory = NULL, clearWD = TRUE) 
+  DIC = TRUE, jags.path = "", working.directory = NULL, clearWD = TRUE,
+  refresh = n.iter/50) 
 {
   if (!is.null(working.directory)) {
     savedWD <- getwd()
