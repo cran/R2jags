@@ -1,3 +1,8 @@
+2009-4-13  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.01-22.
+    * delete the option n.adapt for jags() and incorporate that into n.burnin
+      This is to make jags() more consistent with bugs().
+
 2009-3-10  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.01-21.
     * pass option "progress.bar" to functions

@@ -18,7 +18,7 @@
 jags(data, inits, parameters.to.save, model.file="model.bug",
   n.chains=3, n.iter=2000, n.burnin=floor(n.iter/2),
   n.thin=max(1, floor((n.iter - n.burnin) / n.sims)),
-  n.sims = 1000, n.adapt = 1000, DIC=FALSE, working.directory=NULL,
+  n.sims = 1000, DIC=FALSE, working.directory=NULL,
   refresh = n.iter/50, progress.bar = "text")
 
 
@@ -46,17 +46,18 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
     default: 2000)}
   \item{n.burnin}{length of burn in, i.e. number of iterations to
     discard at the beginning. Default is \code{n.iter/2}, that is,
-    discarding the first half of the simulations.}
+    discarding the first half of the simulations. If n.burnin is 0,
+    \code{jags()} will run 100 iterations for adaption.}
   \item{n.thin}{thinning rate. Must be a positive integer.  Set
     \code{n.thin} > 1 to save memory and computation time if
     \code{n.iter} is large.  Default is \code{max(1, floor(n.chains *
     (n.iter-n.burnin) / 1000))} which will only thin if there are at
     least 2000 simulations.}
   \item{n.sims}{The approximate number of simulations to keep after thinning.}
-  \item{n.adapt}{the number of iterations for adaptation.  When a model is
-          first created, some of the samplers may have an adaptive
-          mode. In this case, the samplers are run for \code{n.adapt}
-          iterations and then the adaptive mode is switched off.}
+%  \item{n.adapt}{the number of iterations for adaptation.  When a model is
+%          first created, some of the samplers may have an adaptive
+%          mode. In this case, the samplers are run for \code{n.adapt}
+%          iterations and then the adaptive mode is switched off.}
   \item{DIC}{logical; if \code{TRUE} (default), compute deviance, pD,
     and DIC. The rule \code{pD=var(deviance) / 2} is used.}
   \item{working.directory}{sets working directory during execution of
