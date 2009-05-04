@@ -105,16 +105,23 @@ jags.sims <- function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
           summary.median[[j]] <- summary[long.short[[j]], "50%"]
       }
       else {
-          temp2 <- dimension.short[j]:1
-          sims.list[[j]] <- aperm(array(sims[, long.short[[j]]], 
+        sims.list[[j]] <- aperm(array(sims[, long.short[[j]]], 
               c(n.sims, rev(n.indexes.short[[j]]))), c(1, (dimension.short[j] + 
               1):2))
-          summary.mean[[j]] <- aperm(array(summary[long.short[[j]], 
-              "mean"], rev(n.indexes.short[[j]])), temp2)
-          summary.sd[[j]] <- aperm(array(summary[long.short[[j]], 
-              "sd"], rev(n.indexes.short[[j]])), temp2)
-          summary.median[[j]] <- aperm(array(summary[long.short[[j]], 
-              "50%"], rev(n.indexes.short[[j]])), temp2)
+        #sims.list[[j]] <- sims[, long.short[[j]]]
+        summary.mean[[j]] <- array(summary[long.short[[j]],"mean"],n.indexes.short[[j]])
+        summary.sd[[j]] <- array(summary[long.short[[j]],"sd"],n.indexes.short[[j]])
+        summary.median[[j]] <- array(summary[long.short[[j]],"50%"],n.indexes.short[[j]])
+#          temp2 <- dimension.short[j]:1
+#          sims.list[[j]] <- aperm(array(sims[, long.short[[j]]], 
+#              c(n.sims, rev(n.indexes.short[[j]]))), c(1, (dimension.short[j] + 
+#              1):2))
+#          summary.mean[[j]] <- aperm(array(summary[long.short[[j]], 
+#              "mean"], rev(n.indexes.short[[j]])), temp2)
+#          summary.sd[[j]] <- aperm(array(summary[long.short[[j]], 
+#              "sd"], rev(n.indexes.short[[j]])), temp2)
+#          summary.median[[j]] <- aperm(array(summary[long.short[[j]], 
+#              "50%"], rev(n.indexes.short[[j]])), temp2)
       }
   }
   summary <- summary[rank.long, ]

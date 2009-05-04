@@ -1,3 +1,7 @@
+2009-5-4  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.01-23.
+    * fix jags.sim and as.bugs.array2 to be consistent with WinBUGS output (sims.list)
+
 2009-4-13  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.01-22.
     * delete the option n.adapt for jags() and incorporate that into n.burnin

@@ -103,7 +103,7 @@ as.bugs.array2 <- function(sims.array, model.file=NULL, program="jags",
       }
     }
   }
-  sims <- sims[sample(n.sims), ]
+  sims <- sims[sample(n.sims), , drop = FALSE]
   sims.list <- summary.mean <- summary.sd <- summary.median <- summary.025 <-  summary.975 <- vector(n.roots, mode = "list")
   names(sims.list) <- names(summary.mean) <- names(summary.sd) <- names(summary.median) <- names(summary.025) <- names(summary.975) <- root.short
   for (j in 1:n.roots) {
@@ -128,7 +128,8 @@ as.bugs.array2 <- function(sims.array, model.file=NULL, program="jags",
     } 
     else if (program=="jags") {
       ##fix this list
-      sims.list[[j]] <- sims[, long.short[[j]]]      
+      sims.list[[j]] <- aperm(array(sims[, long.short[[j]]], c(n.sims, rev(n.indexes.short[[j]]))), c(1, (dimension.short[j] + 1):2))
+      #sims.list[[j]] <- sims[, long.short[[j]]]
       summary.mean[[j]] <- array(summary[long.short[[j]],"mean"],n.indexes.short[[j]])
       summary.sd[[j]] <- array(summary[long.short[[j]],"sd"],n.indexes.short[[j]])
       summary.median[[j]] <- array(summary[long.short[[j]],"50%"],n.indexes.short[[j]])
