@@ -133,7 +133,7 @@ jags.sims <- function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
       long.short = long.short, dimension.short = dimension.short, 
       indexes.short = indexes.short, last.values = last.values)
   if (DIC) {
-    deviance <- all$sims.array[, , dim(sims.array)[3], drop = FALSE]
+    deviance <- all$sims.array[, , "deviance", drop = FALSE]
     dimnames(deviance) <- NULL
     dim(deviance) <- dim(deviance)[1:2]
     pD <- numeric(n.chains)

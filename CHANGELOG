@@ -1,3 +1,8 @@
+2009-8-6  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.01-24.
+    * fix a bug in jags.sim and as.bugs.array2 (DIC calculation)
+      thanks to Luwis Diya
+
 2009-5-4  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.01-23.
     * fix jags.sim and as.bugs.array2 to be consistent with WinBUGS output (sims.list)

@@ -1,7 +1,7 @@
 jags <- function (data, inits, parameters.to.save, model.file = "model.bug", 
   n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2), 
   n.thin = max(1, floor((n.iter - n.burnin)/n.sims)), n.sims = 1000, 
-  DIC = FALSE, working.directory = NULL, 
+  DIC = TRUE, working.directory = NULL, 
   refresh = n.iter/50, progress.bar="text") 
 {
   

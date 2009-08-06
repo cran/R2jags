@@ -158,7 +158,7 @@ as.bugs.array2 <- function(sims.array, model.file=NULL, program="jags",
 
 
   if(DIC && is.null(DICOutput)) { ## calculate DIC from deviance
-    deviance <- all$sims.array[, , dim(sims.array)[3], drop = FALSE]
+    deviance <- all$sims.array[, , "deviance", drop = FALSE]
     dim(deviance) <- dim(deviance)[1:2]
     pD <- numeric(n.chains)
     DIC <- numeric(n.chains)

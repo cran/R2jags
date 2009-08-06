@@ -18,7 +18,7 @@
 jags(data, inits, parameters.to.save, model.file="model.bug",
   n.chains=3, n.iter=2000, n.burnin=floor(n.iter/2),
   n.thin=max(1, floor((n.iter - n.burnin) / n.sims)),
-  n.sims = 1000, DIC=FALSE, working.directory=NULL,
+  n.sims = 1000, DIC=TRUE, working.directory=NULL,
   refresh = n.iter/50, progress.bar = "text")
 
 
@@ -155,7 +155,7 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   # or auto update it until it converges! see ?autojags for details
   jagsfit.upd <- autojags(jagsfit)
     
-  # to get DIC or specify DIC=TRUE in jags()
+  # to get DIC or specify DIC=TRUE in jags() or do the following
   dic.samples(jagsfit.upd$model, n.iter=1000, type="pD")
 
   # to pick up the last save session
