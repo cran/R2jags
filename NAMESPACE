@@ -13,7 +13,9 @@ exportMethods(
 )
 
 export(
+       "attach.jags",
        "autojags",
+       "detach.jags",
        "jags",
        "jags2",
        "jags2bugs",
