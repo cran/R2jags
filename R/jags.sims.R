@@ -3,8 +3,8 @@ jags.sims <- function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
 {
   
   require(R2WinBUGS)
-  sims.files <- paste("codachain", 1:n.chains, ".txt", sep = "")
-  index <- read.table("codaIndex.txt", header = FALSE)#, sep = "\t")
+  sims.files <- paste("CODAchain", 1:n.chains, ".txt", sep = "")
+  index <- read.table("CODAIndex.txt", header = FALSE)#, sep = "\t")
   if (is.R()) {
       parameter.names <- as.vector(index[, 1])
       n.keep <- index[1, 3] - index[1, 2] + 1

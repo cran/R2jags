@@ -5,23 +5,50 @@ jags <- function (data, inits, parameters.to.save, model.file = "model.bug",
   refresh = n.iter/50, progress.bar="text") 
 {  
   require(rjags)
+  inTempDir <- FALSE
   if (!is.null(working.directory)) {
     savedWD <- getwd()
     #working.directory <- win2unixdir(working.directory)
     setwd(working.directory)
-    on.exit(setwd(savedWD))
+    on.exit(setwd(savedWD), add=TRUE)
   }
   else {
-    working.directory <- getwd()
     #working.directory <- win2unixdir(working.directory)
-    setwd(working.directory)
+    working.directory <- getwd()
+    on.exit(setwd(working.directory), add=TRUE)
+    inTempDir <- TRUE
   }
   
-  #data.list <- lapply(as.list(data), get, pos = parent.frame(2))
+  if (!(length(data) == 1 && is.vector(data) && is.character(data) && 
+        (regexpr("\\.txt$", data) > 0))) {
   data.list <- lapply(as.list(data), get, pos = parent.frame(1))
   names(data.list) <- as.list(data)
-  lapply(names(data.list), dump, append=TRUE, file="jagsdata.txt",
-      envir=parent.frame(1))
+  }
+  else {
+    if (inTempDir && all(basename(data) == data)) 
+      try(file.copy(file.path(savedWD, data), data, overwrite = TRUE))
+    if (!file.exists(data)) 
+      stop("File", data, "does not exist.")
+    data.list <- data
+  }
+
+  
+  #data.list <- lapply(as.list(data), get, pos = parent.frame(2))
+ # data.list <- lapply(as.list(data), get, pos = parent.frame(1))
+#  names(data.list) <- as.list(data)
+#  lapply(names(data.list), dump, append=TRUE, file="jagsdata.txt",
+#      envir=parent.frame(1))
+
+#  if (all(sapply(data,class))=="character") {
+#     data.list <- lapply(as.list(data), get, pos = parent.frame(1))
+#     names(data.list) <- as.list(data)
+#  } 
+#  else {
+#    data.list <- data
+#  }
+   lapply(names(data.list), dump, append=TRUE, file="jagsdata.txt",
+       envir=parent.frame(1))    
+
   data <- read.jagsdata("jagsdata.txt")
   file.remove("jagsdata.txt")              
   

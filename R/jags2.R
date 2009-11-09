@@ -4,21 +4,37 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
   DIC = TRUE, jags.path = "", working.directory = NULL, clearWD = TRUE,
   refresh = n.iter/50) 
 {
+  inTempDir <- FALSE
   if (!is.null(working.directory)) {
     savedWD <- getwd()
     #working.directory <- win2unixdir(working.directory)
     setwd(working.directory)
-    on.exit(setwd(savedWD))
+    on.exit(setwd(savedWD), add=TRUE)
   }
   else {
-    working.directory <- getwd()
     #working.directory <- win2unixdir(working.directory)
-    setwd(working.directory)
+    working.directory <- getwd()
+    on.exit(setwd(working.directory), add=TRUE)
+    inTempDir <- TRUE
   }
   redo <- ceiling(n.iter - n.burnin)
 
-  data.list <- lapply(as.list(data), get, pos = parent.frame(2))
+ # data.list <- lapply(as.list(data), get, pos = parent.frame(2))
+#  names(data.list) <- as.list(data)
+  
+  if (!(length(data) == 1 && is.vector(data) && is.character(data) && 
+        (regexpr("\\.txt$", data) > 0))) {
+  data.list <- lapply(as.list(data), get, pos = parent.frame(1))
   names(data.list) <- as.list(data)
+  }
+  else {
+    if (inTempDir && all(basename(data) == data)) 
+      try(file.copy(file.path(savedWD, data), data, overwrite = TRUE))
+    if (!file.exists(data)) 
+      stop("File", data, "does not exist.")
+    data.list <- data
+  }
+  
   lapply(names(data.list), dump, append=TRUE, file="jagsdata.txt")
   data <- read.jagsdata("jagsdata.txt")
 
@@ -86,7 +102,7 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
       n.thin = n.thin, DIC = DIC)
   
   if (clearWD) {
-      file.remove(c("jagsdata.txt", "codaIndex.txt", inits.files, 
+      file.remove(c("jagsdata.txt", "CODAIndex.txt", inits.files, 
           "jagsscript.txt", paste("CODAchain", 1:n.chains, 
               ".txt", sep = "")))
   }

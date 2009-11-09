@@ -1,3 +1,14 @@
+2009-11-9  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.01-27.
+    * R/jags: 
+      1. change the way to specify the working directory.
+      2. allow data to be list of data object.
+    * R/jags2: 
+      1. change the way to specify the working directory.
+      2. allow data to be list of data object.
+      3. coda outputs are now named as CODAchain1 and CODAIndex
+    * R/jags.sim: read coda output as CODAchain1 and CODAIndex
+
 2009-10-12  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.01-26.
     * R/jags: get rid of parameter n.sims
