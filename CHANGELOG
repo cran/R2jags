@@ -1,3 +1,7 @@
+2009-12-14  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.01-28.
+    * R/autojags: fix a bug in the condtion of checking convergence 
+
 2009-11-9  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.01-27.
     * R/jags: 
