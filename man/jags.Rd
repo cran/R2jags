@@ -147,6 +147,13 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   # traceplot
   traceplot(jagsfit)
   
+  # or to use some plots in coda
+  # use as.mcmmc to convert rjags object into mcmc.list
+  jagsfit.mcmc <- as.mcmc(jagsfit)
+  ## now we can use the plotting methods from coda
+  xyplot(jagsfit.mcmc)
+  densityplot(jagsfit.mcmc)
+  
   # if the model does not converge, update it!
   jagsfit.upd <- update(jagsfit, n.iter=1000)
   print(jagsfit.upd)
@@ -172,7 +179,7 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   recompile(jagsfit)
   jagsfit.upd <- update(jagsfit)
 
-
+  
 #=============#
 # using jags2 #
 #=============#

@@ -22,17 +22,25 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
  # data.list <- lapply(as.list(data), get, pos = parent.frame(2))
 #  names(data.list) <- as.list(data)
   
-  if (!(length(data) == 1 && is.vector(data) && is.character(data) && 
-        (regexpr("\\.txt$", data) > 0))) {
-  data.list <- lapply(as.list(data), get, pos = parent.frame(1))
-  names(data.list) <- as.list(data)
+  
+  if(is.list(data)){
+    data.list <- data  
   }
-  else {
-    if (inTempDir && all(basename(data) == data)) 
-      try(file.copy(file.path(savedWD, data), data, overwrite = TRUE))
-    if (!file.exists(data)) 
-      stop("File", data, "does not exist.")
-    data.list <- data
+  else{
+    if (!(length(data) == 1 && is.vector(data) && is.character(data) && 
+          (regexpr("\\.txt$", data) > 0))) {
+      data.list <- lapply(as.list(data), get, pos = parent.frame(1))
+      names(data.list) <- as.list(data)
+    }
+    else {
+      if (inTempDir && all(basename(data) == data)) {
+        try(file.copy(file.path(savedWD, data), data, overwrite = TRUE))
+      }
+      if (!file.exists(data)) {
+        stop("File", data, "does not exist.")
+      }
+      data.list <- data
+    }
   }
   
   lapply(names(data.list), dump, append=TRUE, file="jagsdata.txt")

@@ -39,6 +39,7 @@ setMethod("traceplot", signature(x = "rjags"),
   lty = 1, lwd = 1, ... ) 
 {
   x <- x$BUGS
+  op <- par()$ask
   par( mfrow = mfrow )
   par( ask = ask )
   n.chain    <- x$n.chains
@@ -63,5 +64,6 @@ setMethod("traceplot", signature(x = "rjags"),
     }
     axis( 1, at = seq(0, n.keep, n.keep*0.1), tick = TRUE )
   }
+  on.exit(par(ask=op))
 }
 )

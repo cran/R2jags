@@ -1,3 +1,9 @@
+2009-12-15  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.01-29.
+    * R/jags: now really allow a data to be a data list.
+    * R/as.mcmc: create new a as.mcmc.rjags method
+    * R/traceplot: reset par(ask) while exiting traceplot
+
 2009-12-14  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.01-28.
     * R/autojags: fix a bug in the condtion of checking convergence 
