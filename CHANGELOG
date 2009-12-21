@@ -1,3 +1,7 @@
+2009-12-21  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.01-30.
+    * R/as.bugs.array2: comment out n.burnin=0 in the code.
+
 2009-12-15  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.01-29.
     * R/jags: now really allow a data to be a data list.

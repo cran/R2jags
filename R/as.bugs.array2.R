@@ -9,7 +9,7 @@ as.bugs.array2 <- function(sims.array, model.file=NULL, program="jags",
   ## a couple of lines commented out by Eduardo Leoni (see comment below)
   #require("R2WinBUGS")
   d <- dim(sims.array)
-  n.burnin     <- 0
+  #n.burnin     <- n.burnin
   n.keep       <- d[1]
   n.chains     <- d[2]
   n.parameters <- d[3]
