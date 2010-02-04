@@ -10,7 +10,7 @@ mcmc2bugs <- function(x, model.file = NULL, program = "", DIC = FALSE,
   for (i in 1:n.chains){
     sims.array[,i,] <- x[[i]]
   }
-  ans <- as.bugs.array2(sims.array, model.file=model.file, program=program, DIC=DIC, 
+  ans <- as.bugs.array(sims.array, model.file=model.file, program=program, DIC=DIC, 
     DICOutput=DICOutput, n.iter=n.iter, n.burnin=n.burnin, n.thin=n.thin)
   return(ans)
 }

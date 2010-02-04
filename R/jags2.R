@@ -24,7 +24,8 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
   
   
   if(is.list(data)){
-    data.list <- data  
+    data.list <- data 
+    lapply(data.list, dump, append=TRUE, file="jagsdata.txt", envir=parent.frame(1)) 
   }
   else{
     if (!(length(data) == 1 && is.vector(data) && is.character(data) && 
@@ -41,8 +42,8 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
       }
       data.list <- data
     }
+     
   }
-  
   lapply(names(data.list), dump, append=TRUE, file="jagsdata.txt")
   data <- read.jagsdata("jagsdata.txt")
 
@@ -70,13 +71,15 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
   inits.files <- NULL
   if(is.null(inits)){
     no.inits <- TRUE
-  } else if (is.function(inits)){
+  } 
+  else if (is.function(inits)){
     for (i in 1:n.chains) {
       initial.values <- inits()
       inits.files <- c(inits.files, paste("jagsinits", i, ".txt", sep = ""))
       with(initial.values, dump(names(initial.values), file = paste("jagsinits", i, ".txt", sep = "")))
     }
-  } else if (is.list(inits)){
+  } 
+  else if (is.list(inits)){
     if (length(inits)==n.chains){
       for (i in 1:n.chains) {
         initial.values <- inits[[i]]
@@ -93,6 +96,7 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
   
   cat("model clear\ndata clear\n", 
       "model in ", "\"", model.file, "\"", "\n", 
+      "cd ", "\"", working.directory, "\"", "\n",
       "data in ", "\"jagsdata.txt\"", "\n", 
       "compile, nchains(", n.chains, ")", "\n", 
       if(!no.inits){
@@ -103,6 +107,7 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
       "update ", redo, ", by(", refresh, ")\n", 
       "coda *\n", sep = "", file = "jagsscript.txt")
   
+
   system(paste(jags.call, "jagsscript.txt"))
   
   fit <- jags.sims(parameters.to.save = parameters.to.save, 

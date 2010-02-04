@@ -105,9 +105,7 @@ jags.sims <- function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
           summary.median[[j]] <- summary[long.short[[j]], "50%"]
       }
       else {
-        sims.list[[j]] <- aperm(array(sims[, long.short[[j]]], 
-              c(n.sims, rev(n.indexes.short[[j]]))), c(1, (dimension.short[j] + 
-              1):2))
+        sims.list[[j]] <- array(sims[, long.short[[j]]], c(n.sims, rev(n.indexes.short[[j]])))#, c(1, (dimension.short[j] + 1):2))
         #sims.list[[j]] <- sims[, long.short[[j]]]
         summary.mean[[j]] <- array(summary[long.short[[j]],"mean"],n.indexes.short[[j]])
         summary.sd[[j]] <- array(summary[long.short[[j]],"sd"],n.indexes.short[[j]])

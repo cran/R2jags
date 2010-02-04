@@ -9,7 +9,6 @@ as.bugs.array2 <- function(sims.array, model.file=NULL, program="jags",
   ## a couple of lines commented out by Eduardo Leoni (see comment below)
   #require("R2WinBUGS")
   d <- dim(sims.array)
-  #n.burnin     <- n.burnin
   n.keep       <- d[1]
   n.chains     <- d[2]
   n.parameters <- d[3]
@@ -94,7 +93,7 @@ as.bugs.array2 <- function(sims.array, model.file=NULL, program="jags",
         last.values[[i]][[j]] <- sims.array[n.keep, i, long.short[[j]]]
         names(last.values[[i]][[j]]) <- NULL
       }
-      else if (program=="jags"){
+      if (program=="jags"){
         last.values[[i]][[j]] <- array(sims.array[n.keep, i, long.short[[j]]], n.indexes.short[[j]])
       }
       ## only winbugs have to permute the array.
@@ -113,10 +112,10 @@ as.bugs.array2 <- function(sims.array, model.file=NULL, program="jags",
         summary.sd[[j]] <- summary[long.short[[j]], "sd"]
         summary.median[[j]] <- summary[long.short[[j]], "50%"]
         ##ell: added 025 and 975
-#        summary.025[[j]] <- summary[long.short[[j]], "2.5%"]
-#        summary.975[[j]] <- summary[long.short[[j]], "97.5%"]
+        summary.025[[j]] <- summary[long.short[[j]], "2.5%"]
+        summary.975[[j]] <- summary[long.short[[j]], "97.5%"]
     }
-    else if (program=="bugs") {
+    if (program=="bugs") {
       temp2 <- dimension.short[j]:1
       sims.list[[j]] <- aperm(array(sims[, long.short[[j]]], c(n.sims, rev(n.indexes.short[[j]]))), c(1, (dimension.short[j] + 1):2))
       summary.mean[[j]] <- aperm(array(summary[long.short[[j]], "mean"], rev(n.indexes.short[[j]])), temp2)
@@ -126,9 +125,10 @@ as.bugs.array2 <- function(sims.array, model.file=NULL, program="jags",
 #      summary.025[[j]] <- aperm(array(summary[long.short[[j]], "2.5%"], rev(n.indexes.short[[j]])), temp2)     
 #      summary.975[[j]] <- aperm(array(summary[long.short[[j]], "97.5%"], rev(n.indexes.short[[j]])), temp2)
     } 
-    else if (program=="jags") {
+    if (program=="jags") {
       ##fix this list
-      sims.list[[j]] <- aperm(array(sims[, long.short[[j]]], c(n.sims, rev(n.indexes.short[[j]]))), c(1, (dimension.short[j] + 1):2))
+      #sims.list[[j]] <- aperm(array(sims[, long.short[[j]]], c(n.sims, rev(n.indexes.short[[j]]))), c(1, (dimension.short[j] + 1):2))
+      sims.list[[j]] <- array(sims[, long.short[[j]]], c(n.sims, n.indexes.short[[j]]))
       #sims.list[[j]] <- sims[, long.short[[j]]]
       summary.mean[[j]] <- array(summary[long.short[[j]],"mean"],n.indexes.short[[j]])
       summary.sd[[j]] <- array(summary[long.short[[j]],"sd"],n.indexes.short[[j]])
