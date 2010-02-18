@@ -1,3 +1,10 @@
+2010-2-18  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.02-02.
+    * R/jags2: 
+        1. fix a bug in jagsscript.  
+        2. change CODAIndex to CODAindex
+    * R/jags.sim: change CODAIndex to CODAindex
+
 2010-2-3  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.02-01.
     * R/as.bugs.array: fix sims.list permutation

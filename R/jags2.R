@@ -69,6 +69,7 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
   }
   no.inits <- FALSE
   inits.files <- NULL
+  chain.names <- NULL
   if(is.null(inits)){
     no.inits <- TRUE
   } 
@@ -76,6 +77,7 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
     for (i in 1:n.chains) {
       initial.values <- inits()
       inits.files <- c(inits.files, paste("jagsinits", i, ".txt", sep = ""))
+      chain.names <- c(chain.names, paste("chain(", i, ")", sep = ""))
       with(initial.values, dump(names(initial.values), file = paste("jagsinits", i, ".txt", sep = "")))
     }
   } 
@@ -84,6 +86,7 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
       for (i in 1:n.chains) {
         initial.values <- inits[[i]]
         inits.files <- c(inits.files, paste("jagsinits", i, ".txt", sep = ""))
+        chain.name <- c(chain.names, paste("chain(", i, ")", sep = ""))
         with(initial.values, dump(names(initial.values), file = paste("jagsinits", i, ".txt", sep = "")))
       }
     } else {
@@ -100,13 +103,13 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
       "data in ", "\"jagsdata.txt\"", "\n", 
       "compile, nchains(", n.chains, ")", "\n", 
       if(!no.inits){
-      paste("inits in \"", inits.files, "\"\n", sep = "")}, 
+        paste("inits in \"", inits.files, "\", ", chain.names, "\n", sep = "")
+      }, 
       "initialize", "\n", 
       "update ", n.burnin, ", by(", refresh, ")\n", 
       paste("monitor ", parameters.to.save, ", thin(", n.thin, ")\n", sep = ""),      
       "update ", redo, ", by(", refresh, ")\n", 
       "coda *\n", sep = "", file = "jagsscript.txt")
-  
 
   system(paste(jags.call, "jagsscript.txt"))
   
@@ -115,7 +118,7 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
       n.thin = n.thin, DIC = DIC)
   
   if (clearWD) {
-      file.remove(c("jagsdata.txt", "CODAIndex.txt", inits.files, 
+      file.remove(c("jagsdata.txt", "CODAindex.txt", inits.files, 
           "jagsscript.txt", paste("CODAchain", 1:n.chains, 
               ".txt", sep = "")))
   }

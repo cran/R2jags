@@ -190,10 +190,17 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   ## e.g. setwd("c:/")
 
   ## NOT RUN HERE
-  #jagsfit <- jags2(data=jags.data, inits=jags.inits, jags.params, 
-  #  n.iter=5000, model.file=model.file)
-  #print(jagsfit)
-  #plot(jagsfit)
+  jagsfit <- jags2(data=jags.data, inits=jags.inits, jags.params, 
+    n.iter=5000, model.file=model.file)
+  print(jagsfit)
+  plot(jagsfit)
+  # or to use some plots in coda
+  # use as.mcmmc to convert rjags object into mcmc.list
+  jagsfit.mcmc <- as.mcmc.list(jagsfit)
+  traceplot(jagsfit.mcmc)
+  xyplot(jagsfit.mcmc)
+  densityplot(jagsfit.mcmc)
+
 }
 
 \keyword{interface}
