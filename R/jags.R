@@ -5,24 +5,20 @@ jags <- function (data, inits, parameters.to.save, model.file = "model.bug",
   refresh = n.iter/50, progress.bar="text") 
 {  
   require(rjags)
-  inTempDir <- FALSE
   if (!is.null(working.directory)) {
+    working.directory <- path.expand(working.directory)
     savedWD <- getwd()
-    #working.directory <- win2unixdir(working.directory)
     setwd(working.directory)
-    on.exit(setwd(savedWD), add=TRUE)
+    on.exit(setwd(savedWD))
   }
   else {
-    #working.directory <- win2unixdir(working.directory)
-    working.directory <- getwd()
-    on.exit(setwd(working.directory), add=TRUE)
-    inTempDir <- TRUE
+    saveWD <- getwd()
+    working.directory <- saveWD
   }
   
   if(is.list(data)){
     data.list <- data
-    lapply(data.list, dump, append=TRUE, file="jagsdata.txt",
-       envir=parent.frame(1))  
+    lapply(data.list, dump, append=TRUE, file="jagsdata.txt", envir=parent.frame(1))  
   }
   else{
     if (!(length(data) == 1 && is.vector(data) && is.character(data) && 
@@ -31,7 +27,7 @@ jags <- function (data, inits, parameters.to.save, model.file = "model.bug",
       names(data.list) <- as.list(data)
     }
     else {
-      if (inTempDir && all(basename(data) == data)) {
+      if (all(basename(data) == data)) {
         try(file.copy(file.path(savedWD, data), data, overwrite = TRUE))
       }
       if (!file.exists(data)) {
@@ -63,7 +59,10 @@ jags <- function (data, inits, parameters.to.save, model.file = "model.bug",
       on.exit(file.remove(model.file), add = TRUE)
   }   
                                                                   
-  if (DIC){parameters.to.save <- c(parameters.to.save, "deviance")}
+  if (DIC){
+    parameters.to.save <- c(parameters.to.save, "deviance")
+    load.module("dic", quiet = TRUE)    
+  }
   
   if(is.null(inits)){
     m <- jags.model(model.file, data = data, n.chains = n.chains, 
@@ -88,9 +87,6 @@ jags <- function (data, inits, parameters.to.save, model.file = "model.bug",
     adapt(m, n.iter = n.adapt, by = refresh, progress.bar = progress.bar) 
   }
   
-#  if(n.burnin > 0){
-#    update(m, n.burnin, by = refresh, progress.bar = progress.bar)
-#  }
   
   samples <- coda.samples(model = m, variable.names = parameters.to.save, 
       n.iter = (n.iter-n.burnin), thin = n.thin, by = refresh, 

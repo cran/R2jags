@@ -94,10 +94,16 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
     }
   } 
   
-  if (DIC){parameters.to.save <- c(parameters.to.save, "deviance")}
+  if (DIC){
+    parameters.to.save <- c(parameters.to.save, "deviance")
+    #load.module("dic", quiet = TRUE)
+  }
 
   
   cat("model clear\ndata clear\n", 
+      if(DIC){
+        "load dic\n"
+      },
       "model in ", "\"", model.file, "\"", "\n", 
       "cd ", "\"", working.directory, "\"", "\n",
       "data in ", "\"jagsdata.txt\"", "\n", 
