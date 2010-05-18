@@ -99,6 +99,7 @@ jags <- function (data, inits, parameters.to.save, model.file = "model.bug",
   out <- list(model=m, BUGSoutput = fit, parameters.to.save = parameters.to.save, 
       model.file = model.file, n.iter = n.iter, DIC = DIC)
   
+  
   class(out) <- "rjags"
   return(out)
 }
