@@ -4,19 +4,17 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
   DIC = TRUE, jags.path = "", working.directory = NULL, clearWD = TRUE,
   refresh = n.iter/50) 
 {
-  inTempDir <- FALSE
   if (!is.null(working.directory)) {
+    working.directory <- path.expand(working.directory)
     savedWD <- getwd()
-    #working.directory <- win2unixdir(working.directory)
     setwd(working.directory)
-    on.exit(setwd(savedWD), add=TRUE)
+    on.exit(setwd(savedWD))
   }
   else {
-    #working.directory <- win2unixdir(working.directory)
-    working.directory <- getwd()
-    on.exit(setwd(working.directory), add=TRUE)
-    inTempDir <- TRUE
+    saveWD <- getwd()
+    working.directory <- saveWD
   }
+  
   redo <- ceiling(n.iter - n.burnin)
 
  # data.list <- lapply(as.list(data), get, pos = parent.frame(2))
@@ -34,7 +32,7 @@ jags2 <- function (data, inits, parameters.to.save, model.file = "model.bug",
       names(data.list) <- as.list(data)
     }
     else {
-      if (inTempDir && all(basename(data) == data)) {
+      if (all(basename(data) == data)) {
         try(file.copy(file.path(savedWD, data), data, overwrite = TRUE))
       }
       if (!file.exists(data)) {
