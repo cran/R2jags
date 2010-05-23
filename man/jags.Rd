@@ -163,7 +163,7 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   jagsfit.upd <- autojags(jagsfit)
     
   # to get DIC or specify DIC=TRUE in jags() or do the following#
-  ### dic.samples(jagsfit.upd$model, n.iter=1000, type="pD") not working!!
+  dic.samples(jagsfit.upd$model, n.iter=1000, type="pD")
   
   # attach jags object into search path see "attach.bugs" for details
   attach.jags(jagsfit.upd)

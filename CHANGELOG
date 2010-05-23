@@ -1,4 +1,8 @@
-2010-2-18  Yu-Sung Su <ys463@columbia.edu>  
+2010-5-23  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.02-08.
+    * man/jags: reactivate dic.samples example.
+
+2010-5-18  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.02-02.
     * R/jags2: 
         1. fix a bug in jagsscript.  
