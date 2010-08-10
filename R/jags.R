@@ -15,49 +15,27 @@ jags <- function (data, inits, parameters.to.save, model.file = "model.bug",
     saveWD <- getwd()
     working.directory <- saveWD
   }
-  
-  if(is.list(data)){
-    data.list <- data
-    lapply(data.list, dump, append=TRUE, file="jagsdata.txt", envir=parent.frame(1))  
-  }
-  else{
-    if (!(length(data) == 1 && is.vector(data) && is.character(data) && 
-          (regexpr("\\.txt$", data) > 0))) {
-      data.list <- lapply(as.list(data), get, pos = parent.frame(1))
-      names(data.list) <- as.list(data)
-    }
-    else {
-      if (all(basename(data) == data)) {
-        try(file.copy(file.path(savedWD, data), data, overwrite = TRUE))
-      }
-      if (!file.exists(data)) {
-        stop("File", data, "does not exist.")
-      }
-      data.list <- data
-    }
-  lapply(names(data.list), dump, append=TRUE, file="jagsdata.txt",
-       envir=parent.frame(1))
-  }
 
-  
-    
-
-  data <- read.jagsdata("jagsdata.txt")
-  file.remove("jagsdata.txt")              
-  
-  if (is.function(model.file)) {
-    temp <- tempfile("model")
-    temp <- if (is.R() || .Platform$OS.type != "windows") {
-      paste(temp, "txt", sep = ".")
+  ## jags.model() needs 'data' to be "a list or environment containing the data"
+  if (is.character(data) && length(data)==1 && regexpr("\\.txt$",data)>0) {
+    ## 1. 'data' looks like a file name [UNDOCUMENTED!]
+    if (all(basename(data) == data)) {
+      try(file.copy(file.path(savedWD, data), data, overwrite = TRUE))
     }
-    else {
-      gsub("\\.tmp$", ".txt", temp)
+    if (!file.exists(data)) {
+      stop("File",data,"does not exist")
     }
-    write.model(model.file, con = temp)
-    model.file <- gsub("\\\\", "/", temp)
-    if (!is.R()) 
-      on.exit(file.remove(model.file), add = TRUE)
-  }   
+    e <- new.env()
+    eval(parse(data), e)
+    data <- as.list(e)
+  } else if (is.character(data) || (is.list(data) && all(sapply(data,is.character)))) {
+    ## 2. data is a character vector or a list of character
+    dlist <- lapply(as.list(data), get, envir=parent.frame(1))
+    names(dlist) <- unlist(data)
+    data <- dlist
+  } else if (!is.list(data)) {
+    stop("data must be a character vector of object names, a list of object names, or a list of objects")
+  }
                                                                   
   if (DIC){
     parameters.to.save <- c(parameters.to.save, "deviance")

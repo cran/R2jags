@@ -32,8 +32,10 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
 
 
 \arguments{
-  \item{data}{a vector or list of the names of the data objects used by
-    the model, or a list of the data objects themselves.}
+  \item{data}{(1) a vector or list of the names of the data objects used by
+    the model, (2) a (named) list of the data objects themselves, or
+  (3) the name of a 'dump' format file containing the data objects,
+   which must end in '.txt'}
   \item{inits}{a list with \code{n.chains} elements; each element of the
     list is itself a list of starting values for the \code{BUGS} model,
     \emph{or} a function creating (possibly random) initial values. If inits is 
