@@ -1,3 +1,8 @@
+2010-9-28  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.02-10.
+    * man/traceplot: comment out docType
+
+
 2010-8-10  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.02-09.
     * man/jags: reactivate dic.samples example.
