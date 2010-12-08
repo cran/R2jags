@@ -185,23 +185,24 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
 #=============#
 # using jags2 #
 #=============#
-  ## jags cannot be updated, but produces coda files
-  ## You may need to edit "jags.path",
-  ## also you need write access in the working directory:
-  ## currently works only under Windows OS
-  ## e.g. setwd("c:/")
+  ## jags can be run and produces coda files, but cannot be updated once it's done
+  ## You may need to edit "jags.path" to make this work,
+  ## also you need a write access in the working directory:
+  ## e.g. setwd("d:/")
 
   ## NOT RUN HERE
-  jagsfit <- jags2(data=jags.data, inits=jags.inits, jags.params, 
-    n.iter=5000, model.file=model.file)
-  print(jagsfit)
-  plot(jagsfit)
-  # or to use some plots in coda
-  # use as.mcmmc to convert rjags object into mcmc.list
-  jagsfit.mcmc <- as.mcmc.list(jagsfit)
-  traceplot(jagsfit.mcmc)
-  xyplot(jagsfit.mcmc)
-  densityplot(jagsfit.mcmc)
+  \dontrun{
+    jagsfit <- jags2(data=jags.data, inits=jags.inits, jags.params, 
+      n.iter=5000, model.file=model.file)
+    print(jagsfit)
+    plot(jagsfit)
+    # or to use some plots in coda
+    # use as.mcmmc to convert rjags object into mcmc.list
+    jagsfit.mcmc <- as.mcmc.list(jagsfit)
+    traceplot(jagsfit.mcmc)
+    xyplot(jagsfit.mcmc)
+    densityplot(jagsfit.mcmc)
+  }
 
 }
 
