@@ -1,3 +1,7 @@
+2011-3-10  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.02-13.
+    * R/print: allow output to print with user-specified quantile
+
 2010-12-8  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.02-11.
     * man/jags: \dontrun jags2, need to write a function to search for JAGS.

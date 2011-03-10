@@ -37,7 +37,7 @@ autojags(object, n.iter=1000, n.thin=1, Rhat=1.1, n.update=2,
 
 
 \author{ 
-  Yu-Sung Su \email{ys463@columbia.edu}
+  Yu-Sung Su \email{suyusung@tsinghua.edu.cn}
 }
 
 
