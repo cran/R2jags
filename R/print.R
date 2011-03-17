@@ -4,7 +4,7 @@ print.rjags <- function(x, digits = 3,
   x <- x$BUGSoutput
   sims.matrix <- x$sims.matrix
   mu.vect <- apply(sims.matrix, 2, mean)
-  sd.vect <- apply(sims.matrix, 2, mean)
+  sd.vect <- apply(sims.matrix, 2, sd)
   int.matrix <- apply(sims.matrix, 2, quantile, intervals)
   n.eff <- x$summary[,"n.eff"]
   Rhat <- x$summary[,"Rhat"] 

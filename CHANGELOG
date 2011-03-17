@@ -1,3 +1,7 @@
+2011-3-17  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.02-14.
+    * R/print: miscollect sds as means in printout
+
 2011-3-10  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.02-13.
     * R/print: allow output to print with user-specified quantile
