@@ -9,10 +9,11 @@ print.rjags <- function(x, digits = 3,
   n.eff <- x$summary[,"n.eff"]
   Rhat <- x$summary[,"Rhat"] 
   summaryMatrix <- t(rbind(mu.vect, sd.vect, int.matrix, Rhat, n.eff))
+
   rownameMatrix <- rownames(summaryMatrix)
   dev.idx <- match("deviance", rownameMatrix)
   summaryMatrix <- rbind(summaryMatrix[-dev.idx,], summaryMatrix[dev.idx,])
-  rownames(summaryMatrix) <- c(rownameMatrix[-1], rownameMatrix[1])
+  rownames(summaryMatrix) <- c(rownameMatrix[-dev.idx], rownameMatrix[dev.idx])
   
   
   if (!is.null(x$model.file)) 

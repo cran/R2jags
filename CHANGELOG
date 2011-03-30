@@ -1,3 +1,7 @@
+2011-3-30  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.02-15.
+    * R/print: fix a bug that would print out variable name wrongly
+
 2011-3-17  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.02-14.
     * R/print: miscollect sds as means in printout
