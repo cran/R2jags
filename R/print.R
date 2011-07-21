@@ -12,9 +12,10 @@ print.rjags <- function(x, digits = 3,
 
   rownameMatrix <- rownames(summaryMatrix)
   dev.idx <- match("deviance", rownameMatrix)
-  summaryMatrix <- rbind(summaryMatrix[-dev.idx,], summaryMatrix[dev.idx,])
-  rownames(summaryMatrix) <- c(rownameMatrix[-dev.idx], rownameMatrix[dev.idx])
-  
+  if(any(!is.na(dev.idx))){
+    summaryMatrix <- rbind(summaryMatrix[-dev.idx,], summaryMatrix[dev.idx,])
+    rownames(summaryMatrix) <- c(rownameMatrix[-dev.idx], rownameMatrix[dev.idx])
+  }
   
   if (!is.null(x$model.file)) 
       cat("Inference for Bugs model at \"", x$model.file, "\", ", 
