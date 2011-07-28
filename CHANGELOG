@@ -1,3 +1,7 @@
+2011-7-28  Yu-Sung Su <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 0.02-28.
+    * R/recompile/jags: add end.adaptation=TRUE  
+
 2011-7-21  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.02-16.
     * R/print: fix a bug that would print out NA when DIC=FALSE

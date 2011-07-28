@@ -42,28 +42,19 @@ jags <- function (data, inits, parameters.to.save, model.file = "model.bug",
     load.module("dic", quiet = TRUE)    
   }
   
-  if(is.null(inits)){
-    m <- jags.model(model.file, data = data, n.chains = n.chains, 
-      n.adapt = 0)
-    if(n.burnin>0){
-      n.adapt <- n.burnin
-    }
-    if(n.burnin==0){
-      n.adapt <- 100
-    }
-    adapt(m, n.iter = n.adapt, by = refresh, progress.bar = progress.bar) 
+  if(n.burnin > 0){
+    n.adapt <- n.burnin
+  } else{
+    n.adapt <- 100
   }
-  else{ 
+  
+  if(is.null(inits)){
+    m <- jags.model(model.file, data = data, n.chains = n.chains, n.adapt = 0)
+  } else{ 
     m <- jags.model(model.file, data = data, inits=inits, n.chains = n.chains, 
       n.adapt = 0)
-    if(n.burnin>0){
-      n.adapt <- n.burnin
-    }
-    if(n.burnin==0){
-      n.adapt <- 100
-    }
-    adapt(m, n.iter = n.adapt, by = refresh, progress.bar = progress.bar) 
   }
+  adapt(m, n.iter = n.adapt, by = refresh, progress.bar = progress.bar, end.adaptation=TRUE) 
   
   
   samples <- coda.samples(model = m, variable.names = parameters.to.save, 
