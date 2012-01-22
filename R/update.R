@@ -11,3 +11,23 @@ update.rjags <- function(object, n.iter=1000, n.thin=1,
   class(out) <- "rjags"
   return(out)
 } 
+
+
+update.rjags.parallel <- function(object, n.iter=1000, n.thin=1, 
+      refresh=n.iter/50, progress.bar = "text", ...)
+{
+  nchains <- length(object$model)
+  samples <- NULL
+  for(i in 1:nchains){
+    samples[[i]] <- coda.samples(object$model[[i]], variable.names=object$parameters.to.save, n.iter=n.iter, thin = n.thin, 
+            by = refresh, progress.bar = "text")[[1]]
+  }
+  samples <- as.mcmc.list(samples)
+  fit <- mcmc2bugs(samples, model.file = object$model.file, program = "jags", DIC = FALSE, #DICOutput = NULL, 
+                    n.iter = n.iter, n.burnin = object$n.iter, n.thin = n.thin)
+  out <- list(model=object$model, BUGSoutput=fit, parameters.to.save=object$parameters.to.save,
+    model.file = object$model.file, n.iter=n.iter+object$n.iter, DIC = FALSE)
+#  object$model <- object$model$update(niter=n.iter, ...)
+  class(out) <- c("rjags.parallel", "rjags")
+  return(out)
+} 

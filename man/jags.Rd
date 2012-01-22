@@ -150,8 +150,11 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   jagsfit <- jags(data=jags.data, inits=jags.inits, jags.params, 
     n.iter=5000, model.file=model.file)
   
-  # run jags parallely, no progress bar, so be patient, currenlty cannot be updated.
-  jagsfit.parallel <- jags(data=jags.data, inits=jags.inits, jags.params, 
+  # run jags parallely, no progress bar, so be patient, currenlty 
+  # after update, 1. deviance and DIC are not computed. 
+  # 2. update does not run parallelly
+
+  jagsfit.p <- jags.parallel(data=jags.data, inits=jags.inits, jags.params, 
     n.iter=5000, model.file=model.file)
     
   # display the output
@@ -169,13 +172,21 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   densityplot(jagsfit.mcmc)
   
   # if the model does not converge, update it!
-  jagsfit.upd <- update(jagsfit, n.iter=1000)
+  jagsfit.upd <- update(jagsfit, n.iter=100)
   print(jagsfit.upd)
   print(jagsfit.upd, intervals=c(0.025, 0.5, 0.975))
   plot(jagsfit.upd)
   
+  # before update parallel jags object, do recompile it
+  recompile(jagsfit.p)
+  jagsfit.upd <- update(jagsfit.p, n.iter=100)
+
+  
+  
   # or auto update it until it converges! see ?autojags for details
   jagsfit.upd <- autojags(jagsfit)
+  #autojags does not works for parallel jags object yet
+  #jagsfit.upd <- autojags(jagsfit.p) 
     
   # to get DIC or specify DIC=TRUE in jags() or do the following#
   dic.samples(jagsfit.upd$model, n.iter=1000, type="pD")
@@ -192,8 +203,10 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   # to pick up the last save session
   # for example, load("RWorkspace.Rdata")
   recompile(jagsfit)
-  jagsfit.upd <- update(jagsfit)
+  jagsfit.upd <- update(jagsfit, n.iter=100)
 
+  recompile(jagsfit.p)
+  jagsfit.upd <- update(jagsfit, n.iter=100)
   
 #=============#
 # using jags2 #

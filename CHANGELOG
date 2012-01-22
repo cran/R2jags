@@ -1,4 +1,11 @@
-2012-2-12  Yu-Sung Su <ys463@columbia.edu>  
+2012-1-22  Yu-Sung Su <suyusung@tsinghua.edu.cn>  
+    * DESCRIPTION (Version, Date): 0.03-03.
+    * R/AllClass: add rjags.parallel class
+    * R/jags.parallel: fix a bug for not naming the sims.array correctly
+    * R/recompile: add recompile() for the rjags.parallel class
+    * R/update: add update() for the rjags.parallel class
+
+2012-1-12  Yu-Sung Su <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 0.03-02.
     * R/jags.parallel: add new function that runs jags parallely
 

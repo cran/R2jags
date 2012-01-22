@@ -7,3 +7,8 @@ methods::setClass("rjags",
             model = "jags",
             BUGSoutput = "bugs")
 )
+
+methods::setClass("rjags.parallel",
+     representation(
+            BUGSoutput = "bugs")
+)

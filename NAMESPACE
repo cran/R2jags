@@ -18,13 +18,16 @@ export(
        "autojags",
        "detach.jags",
        "jags",
+       "jags.parallel",
        "jags2",
        "jags2bugs",
        "recompile"
 )
 
 S3method("recompile", "rjags")
+S3method("recompile", "rjags.parallel")
 S3method("plot", "rjags")
 S3method("print", "rjags")
 S3method("update", "rjags")
+S3method("update", "rjags.parallel")
 S3method("as.mcmc", "rjags")

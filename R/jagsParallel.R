@@ -24,19 +24,21 @@ jags.parallel <- function (data, inits, parameters.to.save, model.file = "model.
                     )
     return(jagsfit)
   }
+
   cl <- makeCluster( n.cluster, methods = FALSE )
   clusterExport(cl, data )
   tryCatch( res <- clusterCall(cl,runjg), finally = stopCluster(cl) )
   adim    <- dim( res[[1]]$BUGSoutput$sims.array )
-  adim[2] <- n.chains
-  result  <- array( NA, adim )
+  result  <- NULL
+  model <- NULL
   for( ch in 1:n.chains ){
-    result[,ch,]<- res[[1]]$BUGSoutput$sims.array
+     result <- abind(result, res[[ch]]$BUGSoutput$sims.array, along=2)
+     model[[ch]] <- res[[ch]]$model
   }
-  result <- as.bugs.array(result)
-  res[[1]]$model$nchain <- n.chains
-  out <- list(model=res[[1]]$model, BUGSoutput = result, parameters.to.save = parameters.to.save, 
+  result <- as.bugs.array2(result)
+  #res[[1]]$model$nchain <- n.chains
+  out <- list(model = model, BUGSoutput = result, parameters.to.save = parameters.to.save, 
       model.file = model.file, n.iter = n.iter, DIC = DIC) 
-  class(out) <- "rjags"
+  class(out) <- c("rjags.parallel", "rjags")
   return(out)
 }
