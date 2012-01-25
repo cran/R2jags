@@ -7,6 +7,7 @@ jags <- function( data, inits,
                   n.thin       = max( 1, floor( ( n.iter - n.burnin )/1000 ) ),
                   DIC          = TRUE, 
                   working.directory = NULL, 
+                  jags.seed    = 123,
                   refresh      = n.iter/50, 
                   progress.bar = "text" ) 
 {  
@@ -53,18 +54,60 @@ jags <- function( data, inits,
     n.adapt <- 100
   }
   
-  if( is.null( inits ) ){
-    m <- jags.model( model.file, 
-                     data     = data,
-                     n.chains = n.chains, 
-                     n.adapt  = 0 )
-  } else{ 
-    m <- jags.model( model.file, 
-                     data     = data, 
-                     inits    = inits, 
-                     n.chains = n.chains, 
-                     n.adapt  = 0 )
+  if (!missing(inits) && !is.function(inits) && !is.null(inits) && (length(inits) != n.chains)) {
+    stop("Number of initialized chains (length(inits)) != n.chains")
   }
+
+  
+  init.values <- vector("list", n.chains)
+  if(missing(inits)){
+    for (i in 1:n.chains){
+        init.values[[i]]$.RNG.name <- "base::Mersenne-Twister"
+        init.values[[i]]$.RNG.seed <- jags.seed + runif(1, 10, 20) * i
+    }
+  } else if (is.null(inits)){
+      for (i in 1:n.chains){
+        init.values[[i]]$.RNG.name <- "base::Mersenne-Twister"
+        init.values[[i]]$.RNG.seed <- jags.seed + runif(1, 10, 20) * i
+      }
+  } else if (is.function(inits)){
+      if (any(names(formals(inits)) == "chain")){
+        for (i in 1:n.chains){
+          init.values[[i]] <- inits(chain = i)
+          init.values[[i]]$.RNG.name <- "base::Mersenne-Twister"
+          init.values[[i]]$.RNG.seed <- jags.seed + runif(1, 10, 20) * i
+        }
+      } else{
+          for (i in 1:n.chains){
+            init.values[[i]] <- inits()
+            init.values[[i]]$.RNG.name <- "base::Mersenne-Twister"
+            init.values[[i]]$.RNG.seed <- jags.seed + runif(1, 10, 20) * i
+          }
+      }
+  } else {
+    if (!is.function(inits) && !is.null(inits) && (length(inits) != n.chains)) {
+      stop("Number of initialized chains (length(inits)) != n.chains")
+    }
+    for (i in 1:n.chains){
+      init.values[[i]]$.RNG.name <- "base::Mersenne-Twister"
+      init.values[[i]]$.RNG.seed <- jags.seed + runif(1, 10, 20) * i
+    }
+  } 
+      
+  
+#  if( is.null( inits ) ){
+#    m <- jags.model( model.file, 
+#                     data     = data,
+#                     n.chains = n.chains, 
+#                     n.adapt  = 0 )
+#  } else{ 
+    
+  m <- jags.model(model.file, 
+                  data     = data, 
+                  inits    = init.values, 
+                  n.chains = n.chains, 
+                  n.adapt  = 0 )
+  #}
   adapt( m, 
          n.iter         = n.adapt, 
          by             = refresh, 

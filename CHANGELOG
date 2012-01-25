@@ -1,3 +1,12 @@
+2012-1-25  Yu-Sung Su <suyusung@tsinghua.edu.cn>  
+    * DESCRIPTION (Version, Date): 0.03-04.
+    * R/AllClass: jags.parallel now contains rjags
+    * R/jags.parallel: 
+        1. add jags.seed so that jags.parallel will start with different inits.
+        2. now jags.parallel computes DIC
+    * R/update: update for jags.parallel now computes DIC
+    * R/traceplot: now works with jags.parallel
+
 2012-1-22  Yu-Sung Su <suyusung@tsinghua.edu.cn>  
     * DESCRIPTION (Version, Date): 0.03-03.
     * R/AllClass: add rjags.parallel class

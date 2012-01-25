@@ -2,6 +2,7 @@
 \docType{class}
 % Classes
 \alias{rjags-class}
+\alias{rjags.parallel-class}
 % functions
 \alias{jags}
 \alias{jags2}
@@ -19,14 +20,14 @@
 jags(data, inits, parameters.to.save, model.file="model.bug",
   n.chains=3, n.iter=2000, n.burnin=floor(n.iter/2),
   n.thin=max(1, floor((n.iter - n.burnin) / 1000)),
-  DIC=TRUE, working.directory=NULL,
+  DIC=TRUE, working.directory=NULL, jags.seed = 123,
   refresh = n.iter/50, progress.bar = "text")
 
 jags.parallel(data, inits, parameters.to.save, model.file = "model.bug",
              n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2),
              n.thin = max(1, floor((n.iter - n.burnin)/1000)),
              n.cluster= n.chains, DIC = TRUE,
-             working.directory = NULL )
+             working.directory = NULL, jags.seed = 123 )
 
 jags2(data, inits, parameters.to.save, model.file="model.bug",
   n.chains=3, n.iter=2000, n.burnin=floor(n.iter/2),
@@ -72,6 +73,7 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
     and DIC. The rule \code{pD=var(deviance) / 2} is used.}
   \item{working.directory}{sets working directory during execution of
     this function; This should be the directory where model file is.}
+  \item{jags.seed}{random seed for \code{JAGS}, default is 123}.
   \item{jags.path}{directory that contains the \pkg{jags} executable.
     The default is \dQuote{}.  }
   \item{clearWD}{indicating whether the files \file{data.txt},
@@ -151,8 +153,7 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
     n.iter=5000, model.file=model.file)
   
   # run jags parallely, no progress bar, so be patient, currenlty 
-  # after update, 1. deviance and DIC are not computed. 
-  # 2. update does not run parallelly
+  # update does not run parallelly
 
   jagsfit.p <- jags.parallel(data=jags.data, inits=jags.inits, jags.params, 
     n.iter=5000, model.file=model.file)
@@ -162,10 +163,12 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   plot(jagsfit)
   
   # traceplot
+  traceplot(jagsfit.p)
   traceplot(jagsfit)
   
   # or to use some plots in coda
   # use as.mcmmc to convert rjags object into mcmc.list
+  jagsfit.mcmc <- as.mcmc(jagsfit.p)
   jagsfit.mcmc <- as.mcmc(jagsfit)
   ## now we can use the plotting methods from coda
   xyplot(jagsfit.mcmc)
@@ -184,9 +187,9 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   
   
   # or auto update it until it converges! see ?autojags for details
-  jagsfit.upd <- autojags(jagsfit)
-  #autojags does not works for parallel jags object yet
-  #jagsfit.upd <- autojags(jagsfit.p) 
+  # recompile(jagsfit.p)
+  jagsfit.upd <- autojags(jagsfit.p)
+  jagsfit.upd <- autojags(jagsfit) 
     
   # to get DIC or specify DIC=TRUE in jags() or do the following#
   dic.samples(jagsfit.upd$model, n.iter=1000, type="pD")

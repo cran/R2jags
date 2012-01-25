@@ -1,14 +1,15 @@
-methods::setOldClass("jags")
-methods::setOldClass("bugs")
-methods::setOldClass("mcmc.list")
+setOldClass("jags")
+setOldClass("bugs")
+setOldClass("mcmc.list")
 
-methods::setClass("rjags",
+setClass("rjags",
      representation(
             model = "jags",
             BUGSoutput = "bugs")
 )
 
-methods::setClass("rjags.parallel",
+setClass("rjags.parallel",
      representation(
-            BUGSoutput = "bugs")
+            BUGSoutput = "bugs"),
+     contains = "rjags"
 )

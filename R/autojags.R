@@ -1,7 +1,7 @@
 autojags <- function(object, n.iter=1000, n.thin=1, Rhat=1.1, n.update=2, refresh=n.iter/50, 
     progress.bar = "text",...)
 {
-  if(!class(object) %in% "rjags") stop("model must be a rjags object")
+  if(any(!class(object) %in% c("rjags","rjags.parallel"))) stop("model must be a rjags object")
     object <- update(object, n.iter=n.iter, n.thin=n.thin, 
                       refresh=refresh, progress.bar = progress.bar,...)
     check <- any(object$BUGSoutput$summary[,"Rhat"] > Rhat)

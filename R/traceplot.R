@@ -1,4 +1,14 @@
-traceplot <- function(x, ...) UseMethod("traceplot")
+#traceplot <- function(x, ...) UseMethod("traceplot")
+
+
+
+if (!isGeneric("tracplot")) {
+    setGeneric("traceplot",
+               function(x, ...)
+               standardGeneric("traceplot"))
+}
+
+
 traceplot.default <- coda::traceplot
 
 
@@ -38,7 +48,7 @@ setMethod("traceplot", signature(x = "rjags"),
   col = rainbow( x$n.chains ),
   lty = 1, lwd = 1, ... ) 
 {
-  x <- x$BUGS
+  x <- x$BUGSoutput
   op <- par()$ask
   par( mfrow = mfrow )
   par( ask = ask )

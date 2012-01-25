@@ -6,7 +6,8 @@
 importFrom(coda, "as.mcmc")
 
 exportClasses(
-              "rjags"              
+              "rjags",
+              "rjags.parallel"             
               )
 
 exportMethods(
