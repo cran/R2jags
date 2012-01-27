@@ -29,6 +29,7 @@ jags.parallel <- function (data, inits, parameters.to.save, model.file = "model.
 
   cl <- makeCluster( n.cluster, methods = FALSE )
   clusterExport(cl, data)
+  clusterSetRNGStream(cl, jags.seed)
   tryCatch( res <- clusterCall(cl,.runjags), finally = stopCluster(cl) )
   #adim    <- dim( res[[1]]$BUGSoutput$sims.array )
   result  <- NULL

@@ -1,3 +1,9 @@
+2012-1-27  Yu-Sung Su <suyusung@tsinghua.edu.cn>  
+    * DESCRIPTION (Version, Date): 0.03-05.
+    * R/jags: better way to handle initialization, better use of random.seed
+    * R/jags.parallel: set RNG stream in cluster. 
+
+
 2012-1-25  Yu-Sung Su <suyusung@tsinghua.edu.cn>  
     * DESCRIPTION (Version, Date): 0.03-04.
     * R/AllClass: jags.parallel now contains rjags
