@@ -21,13 +21,13 @@ jags(data, inits, parameters.to.save, model.file="model.bug",
   n.chains=3, n.iter=2000, n.burnin=floor(n.iter/2),
   n.thin=max(1, floor((n.iter - n.burnin) / 1000)),
   DIC=TRUE, working.directory=NULL, jags.seed = 123,
-  refresh = n.iter/50, progress.bar = "text")
+  refresh = n.iter/50, progress.bar = "text", digits=5)
 
 jags.parallel(data, inits, parameters.to.save, model.file = "model.bug",
              n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2),
              n.thin = max(1, floor((n.iter - n.burnin)/1000)),
              n.cluster= n.chains, DIC = TRUE,
-             working.directory = NULL, jags.seed = 123 )
+             working.directory = NULL, jags.seed = 123, digits=5)
 
 jags2(data, inits, parameters.to.save, model.file="model.bug",
   n.chains=3, n.iter=2000, n.burnin=floor(n.iter/2),
@@ -41,15 +41,18 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
 \arguments{
   \item{data}{(1) a vector or list of the names of the data objects used by
     the model, (2) a (named) list of the data objects themselves, or
-  (3) the name of a 'dump' format file containing the data objects,
-   which must end in '.txt'}
+  (3) the name of a "dump" format file containing the data objects,
+   which must end in ".txt", see example below for details.}
   \item{inits}{a list with \code{n.chains} elements; each element of the
     list is itself a list of starting values for the \code{BUGS} model,
     \emph{or} a function creating (possibly random) initial values. If inits is 
-    \code{NULL}, \pkg{JAGS} will generate initial values for parameters.}
+    \code{NULL}, \code{JAGS} will generate initial values for parameters.}
   \item{parameters.to.save}{character vector of the names of the
     parameters to save which should be monitored.}
-  \item{model.file}{file containing the model written in \code{BUGS} code.}
+  \item{model.file}{file containing the model written in \code{BUGS}
+  code. Alternatively, as in \pkg{R2WinBUGS}, \code{model.file} can be an R
+  function that contains a \code{BUGS} model that is written to a
+  temporary model file (see \code{\link{tempfile}}) using \code{\link{write.model}}}
   \item{n.chains}{number of Markov chains (default: 3)}
   \item{n.iter}{number of total iterations per chain (including burn in;
     default: 2000)}
@@ -74,11 +77,11 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   \item{working.directory}{sets working directory during execution of
     this function; This should be the directory where model file is.}
   \item{jags.seed}{random seed for \code{JAGS}, default is 123}.
-  \item{jags.path}{directory that contains the \pkg{jags} executable.
+  \item{jags.path}{directory that contains the \code{JAGS} executable.
     The default is \dQuote{}.  }
   \item{clearWD}{indicating whether the files \file{data.txt},
     \file{inits[1:n.chains].txt}, \file{codaIndex.txt}, \file{jagsscript.txt},
-    and \file{CODAchain[1:nchains].txt} should be removed after \pkg{jags} has
+    and \file{CODAchain[1:nchains].txt} should be removed after \code{jags} has
     finished, default=TRUE.}
   \item{refresh}{refresh frequency for progress bar, default is \code{n.iter/50}}
   \item{progress.bar}{type of progress bar. Possible values are \dQuote{text}, 
@@ -86,6 +89,8 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
       on the R console. Type \dQuote{gui} is a graphical progress bar 
       in a new window. The progress bar is suppressed if \code{progress.bar} is 
       \dQuote{none}}
+    \item{digits}{as in \code{\link{write.model}} in the \pkg{R2WinBUGS} package:  number of significant digits used for
+  \code{BUGS} input, see \code{\link{formatC}}.  Only used if specifying  a \code{BUGS} model as an R function.}
 }
 
 
@@ -93,11 +98,11 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
 \details{
   To run:
   \enumerate{
-    \item Write a \pkg{BUGS} model in an ASCII file.
+    \item Write a \code{BUGS} model in an ASCII file.
     \item Go into \R.
     \item Prepare the inputs for the \code{jags} function and run it (see
       Example section).
-    \item The model will now run in \pkg{JAGS}. It might take awhile. You
+    \item The model will now run in \code{JAGS}. It might take awhile. You
       will see things happening in the R console.
   }
 
@@ -134,11 +139,17 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   model.file <- system.file(package="R2jags", "model", "schools.txt")
   # Let's take a look:
   file.show(model.file)
+  # you can also write BUGS model as a R function, see below:
+
+#=================#
+# initialization  #
+#=================#
 
   # data
   J <- 8.0
   y <- c(28.4,7.9,-2.8,6.8,-0.6,0.6,18.0,12.2)
   sd <- c(14.9,10.2,16.3,11.0,9.4,11.4,10.4,17.6)
+
 
   jags.data <- list("y","sd","J")
   jags.params <- c("mu","sigma","theta")
@@ -146,14 +157,53 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
     list("mu"=rnorm(1),"sigma"=runif(1),"theta"=rnorm(J))
   }
   
-#=============#
-# using jags  #
-#=============#
+  ## You can input data in 4 ways  
+  ## 1) data as list of character
+  jagsfit <- jags(data=list("y","sd","J"), inits=jags.inits, jags.params,
+                n.iter=10, model.file=model.file)
+
+  ## 2) data as character vector of names
+  jagsfit <- jags(data=c("y","sd","J"), inits=jags.inits, jags.params,
+                n.iter=10, model.file=model.file)
+
+  ## 3) data as named list
+  jagsfit <- jags(data=list(y=y,sd=sd,J=J), inits=jags.inits, jags.params,
+                n.iter=10, model.file=model.file)
+
+  ## 4) data as a file
+  fn <- "tmpbugsdata.txt"
+  dump(c("y","sd","J"), file=fn)
+  jagsfit <- jags(data=fn, inits=jags.inits, jags.params,
+                  n.iter=10, model.file=model.file)
+  unlink("tmpbugsdata.txt")
+  
+  ## You can write bugs model in R as a function
+
+  schoolsmodel <- function() {
+    for (j in 1:J){                     # J=8, the number of schools
+      y[j] ~ dnorm (theta[j], tau.y[j]) # data model:  the likelihood
+      tau.y[j] <- pow(sd[j], -2)        # tau = 1/sigma^2
+    }
+    for (j in 1:J){
+      theta[j] ~ dnorm (mu, tau)        # hierarchical model for theta
+    }
+    tau <- pow(sigma, -2)               # tau = 1/sigma^2
+    mu ~ dnorm (0.0, 1.0E-6)            # noninformative prior on mu
+    sigma ~ dunif (0, 1000)             # noninformative prior on sigma
+  }
+  
+  jagsfit <- jags(data=jags.data, inits=jags.inits, jags.params,
+                n.iter=10, model.file=schoolsmodel)
+
+
+#===============================#
+# RUN jags and postprocessing   #
+#===============================#
   jagsfit <- jags(data=jags.data, inits=jags.inits, jags.params, 
     n.iter=5000, model.file=model.file)
   
-  # run jags parallely, no progress bar, so be patient, currenlty 
-  # update does not run parallelly
+  # Run jags parallely, no progress bar. R may be frozen for a while, 
+  # Be patient. Currenlty update afterward does not run parallelly
 
   jagsfit.p <- jags.parallel(data=jags.data, inits=jags.inits, jags.params, 
     n.iter=5000, model.file=model.file)

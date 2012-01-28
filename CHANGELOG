@@ -1,3 +1,10 @@
+2012-1-28  Yu-Sung Su <suyusung@tsinghua.edu.cn>  
+    * DESCRIPTION (Version, Date): 0.03-06.(Thanks to Ben Bolker)
+    * R/jags: 
+        1. alow 4 ways of data input, 
+        2. alow bugs model as an R function.
+    * man/jags: more example code to illustrate the added new features.
+
 2012-1-27  Yu-Sung Su <suyusung@tsinghua.edu.cn>  
     * DESCRIPTION (Version, Date): 0.03-05.
     * R/jags: better way to handle initialization, better use of random.seed

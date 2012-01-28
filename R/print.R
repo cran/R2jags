@@ -6,8 +6,12 @@ print.rjags <- function(x, digits = 3,
   mu.vect <- apply(sims.matrix, 2, mean)
   sd.vect <- apply(sims.matrix, 2, sd)
   int.matrix <- apply(sims.matrix, 2, quantile, intervals)
-  n.eff <- x$summary[,"n.eff"]
-  Rhat <- x$summary[,"Rhat"] 
+  if (x$n.chains>1) {
+    n.eff <- x$summary[,"n.eff"]
+    Rhat <- x$summary[,"Rhat"] 
+  } else {
+    n.eff <- Rhat <- NULL
+  }
   summaryMatrix <- t(rbind(mu.vect, sd.vect, int.matrix, Rhat, n.eff))
 
   rownameMatrix <- rownames(summaryMatrix)

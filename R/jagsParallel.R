@@ -3,7 +3,7 @@ jags.parallel <- function (data, inits, parameters.to.save, model.file = "model.
                            n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2),
                            n.thin = max(1, floor((n.iter - n.burnin)/1000)),
                            n.cluster= n.chains, DIC = TRUE,
-                           working.directory = NULL, jags.seed = 123 )
+                           working.directory = NULL, jags.seed = 123, digits = 5)
 {
   jags.params <- parameters.to.save
   jags.inits  <- if(missing(inits)){ NULL} else{inits}
@@ -22,7 +22,8 @@ jags.parallel <- function (data, inits, parameters.to.save, model.file = "model.
                     DIC                = eval(expression(DIC)),
                     working.directory  = eval(expression(working.directory)),
                     jags.seed          = eval(expression(jags.seed)),
-                    progress.bar       = "none"
+                    progress.bar       = "none",
+                    digits             = eval(expression(digits))
                     )
     return(jagsfit)
   }

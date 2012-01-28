@@ -4,6 +4,7 @@
 #importFrom(rjags,coda.samples)
 
 importFrom(coda, "as.mcmc")
+importFrom(R2WinBUGS, "write.model")
 
 exportClasses(
               "rjags",

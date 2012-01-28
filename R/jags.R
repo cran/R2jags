@@ -9,7 +9,8 @@ jags <- function( data, inits,
                   working.directory = NULL, 
                   jags.seed    = 123,
                   refresh      = n.iter/50, 
-                  progress.bar = "text" ) 
+                  progress.bar = "text",
+                  digits = 5) 
 {  
   require( rjags )
   if( !is.null( working.directory ) ){
@@ -26,10 +27,16 @@ jags <- function( data, inits,
                            && regexpr( "\\.txt$", data ) > 0 ) {
     ## 1. 'data' looks like a file name [UNDOCUMENTED!]
     if ( all( basename( data ) == data )) {
-      try( file.copy( file.path( working.directory, data ), data, overwrite = TRUE ) )
+      fn2 <- file.path( working.directory, data )
+      if (normalizePath(fn2)!=normalizePath(data)) {  ## file.copy() to same place trashes the file
+        try( file.copy(fn2 , data, overwrite = TRUE ) )
+      }
     }
     if ( !file.exists( data ) ) {
       stop("File",data,"does not exist")
+    }
+    if (file.info(data)["size"]==0) {
+      stop("Empty data file ",data)
     }
     e    <- new.env()
     eval( parse( data ), e )
@@ -42,6 +49,21 @@ jags <- function( data, inits,
     data           <- dlist
   } else if( !is.list( data ) ){
     stop( "data must be a character vector of object names, a list of object names, or a list of objects" )
+  }
+  
+  ## copied from R2WinBUGS: 
+  if (is.function(model.file)) {
+    temp <- tempfile("model")
+    temp <- if (is.R() || .Platform$OS.type != "windows") {
+      paste(temp, "txt", sep = ".")
+    }
+    else {
+      gsub("\\.tmp$", ".txt", temp)
+    }
+    write.model(model.file, con = temp, digits = digits) ## from R2WinBUGS
+    model.file <- gsub("\\\\", "/", temp)
+    if (!is.R()) 
+      on.exit(file.remove(model.file), add = TRUE)
   }
   if( DIC ){
     parameters.to.save <- c( parameters.to.save, "deviance" )
