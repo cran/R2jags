@@ -79,6 +79,14 @@ as.bugs.array2 <- function(sims.array, model.file=NULL, program="jags",
   dimnames(sims) <- list(NULL, parameter.names)
   summary <- R2WinBUGS:::monitor(sims.array, n.chains, keep.all = TRUE)
   last.values <- as.list(numeric(n.chains))
+  
+  for(nn in 1:length(n.indexes.short)){
+    if(is.null(n.indexes.short[[nn]])){
+      n.indexes.short[[nn]] <- 1
+    }
+  }
+  
+  
   for (i in 1:n.chains) {
     n.roots.0 <- if (DIC){
                    n.roots - 1

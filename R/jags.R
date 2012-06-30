@@ -1,6 +1,6 @@
 jags <- function( data, inits, 
                   parameters.to.save,
-                   model.file  = "model.bug", 
+                  model.file  = "model.bug", 
                   n.chains     = 3, 
                   n.iter       = 2000, 
                   n.burnin     = floor(n.iter/2), 
