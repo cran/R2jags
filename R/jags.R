@@ -108,14 +108,19 @@ jags <- function( data, inits,
           }
       }
   } else {
-    if (!is.function(inits) && !is.null(inits) && (length(inits) != n.chains)) {
+    #if (!is.function(inits) && !is.null(inits) && (length(inits) != n.chains)) {
+    if (!is.list(inits)) {
+      stop("Invalid inits")
+    }
+    if (length(inits) != n.chains) {
       stop("Number of initialized chains (length(inits)) != n.chains")
     }
     for (i in 1:n.chains){
+      init.values[[i]] <- inits[[i]]  
       init.values[[i]]$.RNG.name <- "base::Mersenne-Twister"
       init.values[[i]]$.RNG.seed <- abs(.Random.seed[i+1])
     }
-  } 
+   }
       
   
 #  if( is.null( inits ) ){
