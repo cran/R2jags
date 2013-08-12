@@ -10,7 +10,9 @@ jags <- function( data, inits,
                   jags.seed    = 123,
                   refresh      = n.iter/50, 
                   progress.bar = "text",
-                  digits = 5) 
+                  digits = 5,
+                  RNGname = c("Wichmann-Hill", "Marsaglia-Multicarry", "Super-Duper", "Mersenne-Twister")
+                  ) 
 {  
   require( rjags )
   if( !is.null( working.directory ) ){
@@ -80,30 +82,38 @@ jags <- function( data, inits,
     stop("Number of initialized chains (length(inits)) != n.chains")
   }
 
+  RNGname <- match.arg(RNGname)
+  if(RNGname %in% c("Wichmann-Hill", "Marsaglia-Multicarry", "Super-Duper", "baseMersenne-Twister")){
+    RNGname <- paste("base::",RNGname,sep="")
+  }else{
+    stop("The name of the RNG is not correctly provided!")
+  }
+
+
   #load.module("lecuyer")
   load.module("glm")
   init.values <- vector("list", n.chains)
   if(missing(inits)){
     for (i in 1:n.chains){
-        init.values[[i]]$.RNG.name <- "base::Mersenne-Twister"
+        init.values[[i]]$.RNG.name <- RNGname
         init.values[[i]]$.RNG.seed <- abs(.Random.seed[i+1])
     }
   } else if (is.null(inits)){
       for (i in 1:n.chains){
-        init.values[[i]]$.RNG.name <- "base::Mersenne-Twister"
+        init.values[[i]]$.RNG.name <- RNGname
         init.values[[i]]$.RNG.seed <- abs(.Random.seed[i+1])
       }
   } else if (is.function(inits)){
       if (any(names(formals(inits)) == "chain")){
         for (i in 1:n.chains){
           init.values[[i]] <- inits(chain = i)
-          init.values[[i]]$.RNG.name <- "base::Mersenne-Twister"
+          init.values[[i]]$.RNG.name <- RNGname
           init.values[[i]]$.RNG.seed <- abs(.Random.seed[i+1])
         }
       } else{
           for (i in 1:n.chains){
             init.values[[i]] <- inits()
-            init.values[[i]]$.RNG.name <- "base::Mersenne-Twister"
+            init.values[[i]]$.RNG.name <- RNGname
             init.values[[i]]$.RNG.seed <- abs(.Random.seed[i+1])
           }
       }
@@ -117,7 +127,7 @@ jags <- function( data, inits,
     }
     for (i in 1:n.chains){
       init.values[[i]] <- inits[[i]]  
-      init.values[[i]]$.RNG.name <- "base::Mersenne-Twister"
+      init.values[[i]]$.RNG.name <- RNGname
       init.values[[i]]$.RNG.seed <- abs(.Random.seed[i+1])
     }
    }
