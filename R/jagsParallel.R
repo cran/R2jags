@@ -12,7 +12,6 @@ jags.parallel <- function (data, inits, parameters.to.save, model.file = "model.
   jags.model  <- model.file
   
   .runjags <- function() {
-    #library(R2jags)
     jagsfit <- jags(data               = eval(expression(data)),
                     inits              = jags.inits,
                     parameters.to.save = eval(expression(jags.params)), 
@@ -32,7 +31,7 @@ jags.parallel <- function (data, inits, parameters.to.save, model.file = "model.
   }
 
   cl <- makeCluster( n.cluster, methods = FALSE )
-  clusterExport(cl, data)
+  clusterExport(cl, c(data, "mcmc", "mcmc.list"))
   clusterSetRNGStream(cl, jags.seed)
   tryCatch( res <- clusterCall(cl,.runjags), finally = stopCluster(cl) )
   #adim    <- dim( res[[1]]$BUGSoutput$sims.array )

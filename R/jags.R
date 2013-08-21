@@ -14,7 +14,7 @@ jags <- function( data, inits,
                   RNGname = c("Wichmann-Hill", "Marsaglia-Multicarry", "Super-Duper", "Mersenne-Twister")
                   ) 
 {  
-  require( rjags )
+  #require( rjags )
   if( !is.null( working.directory ) ){
     working.directory <- path.expand( working.directory )
     savedWD <- getwd()
@@ -83,7 +83,7 @@ jags <- function( data, inits,
   }
 
   RNGname <- match.arg(RNGname)
-  if(RNGname %in% c("Wichmann-Hill", "Marsaglia-Multicarry", "Super-Duper", "baseMersenne-Twister")){
+  if(RNGname %in% c("Wichmann-Hill", "Marsaglia-Multicarry", "Super-Duper", "Mersenne-Twister")){
     RNGname <- paste("base::",RNGname,sep="")
   }else{
     stop("The name of the RNG is not correctly provided!")

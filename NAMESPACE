@@ -1,10 +1,20 @@
-#import("R2WinBUGS", "rjags")
+importFrom(methods, "setOldClass")
 
-#importFrom(rjags,jags.model)
-#importFrom(rjags,coda.samples)
+importFrom(rjags, "jags.model",
+                  "coda.samples",
+                  "load.module",
+                  "adapt")
 
-importFrom(coda, "as.mcmc")
-importFrom(R2WinBUGS, "write.model")
+importFrom(abind, "abind")
+
+importFrom(coda, "as.mcmc", "mcmc", "as.mcmc.list")
+
+import(parallel)
+
+importFrom(R2WinBUGS, "attach.bugs",
+                      "detach.bugs",
+                      "write.model", 
+                      "monitor")
 
 exportClasses(
               "rjags",

@@ -1,3 +1,5 @@
+# copy from coda
+
 as.mcmc.rjags <- function (x) {
   x <- x$BUGSoutput
   if (x$n.chains > 1) {

@@ -1,8 +1,32 @@
+# copy from R2WinBUGS
+.decode.parameter.name <- function (a) 
+{
+    left.bracket <- regexpr("[[]", a)
+    if (left.bracket == -1) {
+        root <- a
+        dimension <- 0
+        indexes <- NA
+    }
+    else {
+        root <- substring(a, 1, left.bracket - 1)
+        right.bracket <- regexpr("[]]", a)
+        a <- substring(a, left.bracket + 1, right.bracket - 1)
+        indexes <- as.numeric(unlist(strsplit(a, ",")))
+        dimension <- length(indexes)
+    }
+    list(root = root, dimension = dimension, indexes = indexes)
+}
+
+
+
+
+
+
 jags.sims <- function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin, 
   DIC = TRUE) 
 {
   
-  require(R2WinBUGS)
+  #require(R2WinBUGS)
   sims.files <- paste("CODAchain", 1:n.chains, ".txt", sep = "")
   index <- read.table("CODAindex.txt", header = FALSE)#, sep = "\t")
   if (is.R()) {
@@ -20,7 +44,7 @@ jags.sims <- function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
   root.long <- character(n.parameters)
   indexes.long <- vector(n.parameters, mode = "list")
   for (i in 1:n.parameters) {
-      temp <- R2WinBUGS:::decode.parameter.name(parameter.names[i])
+      temp <- .decode.parameter.name(parameter.names[i])
       root.long[i] <- temp$root
       indexes.long[[i]] <- temp$indexes
   }
