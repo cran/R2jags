@@ -7,7 +7,7 @@ importFrom(rjags, "jags.model",
 
 importFrom(abind, "abind")
 
-importFrom(coda, "as.mcmc", "mcmc", "as.mcmc.list")
+importFrom(coda, "as.mcmc", "mcmc", "as.mcmc.list", "traceplot")
 
 import(parallel)
 
