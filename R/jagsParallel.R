@@ -1,8 +1,8 @@
 
 jags.parallel <- function (data, inits, parameters.to.save, model.file = "model.bug",
-                           n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2),
+                           n.chains = 2, n.iter = 2000, n.burnin = floor(n.iter/2),
                            n.thin = max(1, floor((n.iter - n.burnin)/1000)),
-                           n.cluster= n.chains, DIC = TRUE,
+                           n.cluster = n.chains, DIC = TRUE,
                            working.directory = NULL, jags.seed = 123, digits = 5,
                             RNGname = c("Wichmann-Hill", "Marsaglia-Multicarry", "Super-Duper", "Mersenne-Twister")
                             )

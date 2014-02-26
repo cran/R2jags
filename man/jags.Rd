@@ -27,7 +27,7 @@ jags(data, inits, parameters.to.save, model.file="model.bug",
   )
 
 jags.parallel(data, inits, parameters.to.save, model.file = "model.bug",
-             n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2),
+             n.chains = 2, n.iter = 2000, n.burnin = floor(n.iter/2),
              n.thin = max(1, floor((n.iter - n.burnin)/1000)),
              n.cluster= n.chains, DIC = TRUE,
              working.directory = NULL, jags.seed = 123, digits=5,
@@ -67,7 +67,7 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
     discarding the first half of the simulations. If n.burnin is 0,
     \code{jags()} will run 100 iterations for adaption.}
   \item{n.cluster}{number of clusters to use to run parallel chains.  
-    Default equals number of chains}
+    Default equals n.chains.}
   \item{n.thin}{thinning rate. Must be a positive integer.  Set
     \code{n.thin} > 1 to save memory and computation time if
     \code{n.iter} is large.  Default is \code{max(1, floor(n.chains *
@@ -215,9 +215,9 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   
   # Run jags parallely, no progress bar. R may be frozen for a while, 
   # Be patient. Currenlty update afterward does not run parallelly
-
-  jagsfit.p <- jags.parallel(data=jags.data, inits=jags.inits, jags.params, 
-    n.iter=5000, model.file=model.file)
+  #  
+   jagsfit.p <- jags.parallel(data=jags.data, inits=jags.inits, jags.params, 
+     n.iter=5000, model.file=model.file)
     
   # display the output
   print(jagsfit)

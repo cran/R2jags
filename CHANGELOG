@@ -1,3 +1,8 @@
+2014-2-26 Yu-Sung Su <suyusung@tsinghua.edu.cn>  
+    * DESCRIPTION (Version, Date): 0.04-01
+    * R/as.mcmc: fix counter error in update and autoupdate
+    * R/update: fix counter error in update and autoupdate
+
 2014-1-18 Yu-Sung Su <suyusung@tsinghua.edu.cn>  
     * DESCRIPTION (Version, Date): 0.03-12
     * R/as.mcmc: fix a bug of casuing false convergence when n.chains==1
