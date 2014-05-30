@@ -1,19 +1,19 @@
-jags <- function( data, inits, 
+jags <- function( data, inits,
                   parameters.to.save,
-                  model.file  = "model.bug", 
-                  n.chains     = 3, 
-                  n.iter       = 2000, 
-                  n.burnin     = floor(n.iter/2), 
+                  model.file  = "model.bug",
+                  n.chains     = 3,
+                  n.iter       = 2000,
+                  n.burnin     = floor(n.iter/2),
                   n.thin       = max( 1, floor( ( n.iter - n.burnin )/1000 ) ),
-                  DIC          = TRUE, 
-                  working.directory = NULL, 
+                  DIC          = TRUE,
+                  working.directory = NULL,
                   jags.seed    = 123,
-                  refresh      = n.iter/50, 
+                  refresh      = n.iter/50,
                   progress.bar = "text",
                   digits = 5,
                   RNGname = c("Wichmann-Hill", "Marsaglia-Multicarry", "Super-Duper", "Mersenne-Twister")
-                  ) 
-{  
+                  )
+{
   #require( rjags )
   if( !is.null( working.directory ) ){
     working.directory <- path.expand( working.directory )
@@ -25,7 +25,7 @@ jags <- function( data, inits,
     working.directory <- savedWD
   }
   ## jags.model() needs 'data' to be "a list or environment containing the data
-  if( is.character( data ) && length(data) == 1 
+  if( is.character( data ) && length(data) == 1
                            && regexpr( "\\.txt$", data ) > 0 ) {
     ## 1. 'data' looks like a file name [UNDOCUMENTED!]
     if ( all( basename( data ) == data )) {
@@ -43,7 +43,7 @@ jags <- function( data, inits,
     e    <- new.env()
     eval( parse( data ), e )
     data <- as.list( e )
-  } else if( is.character( data ) || 
+  } else if( is.character( data ) ||
              ( is.list( data ) && all( sapply( data,is.character ) ) ) ){
     ## 2. data is a character vector or a list of character
     dlist          <- lapply( as.list( data ), get, envir = parent.frame( 1 ) )
@@ -52,8 +52,8 @@ jags <- function( data, inits,
   } else if( !is.list( data ) ){
     stop( "data must be a character vector of object names, a list of object names, or a list of objects" )
   }
-  
-  ## copied from R2WinBUGS: 
+
+  ## copied from R2WinBUGS:
   if (is.function(model.file)) {
     temp <- tempfile("model")
     temp <- if (is.R() || .Platform$OS.type != "windows") {
@@ -64,20 +64,20 @@ jags <- function( data, inits,
     }
     write.model(model.file, con = temp, digits = digits) ## from R2WinBUGS
     model.file <- gsub("\\\\", "/", temp)
-    if (!is.R()) 
+    if (!is.R())
       on.exit(file.remove(model.file), add = TRUE)
   }
   if( DIC ){
     parameters.to.save <- c( parameters.to.save, "deviance" )
     load.module( "dic", quiet = TRUE )
   }
-  
+
   if( n.burnin > 0 ){
     n.adapt <- n.burnin
   } else{
     n.adapt <- 100
   }
-  
+
   if (!missing(inits) && !is.function(inits) && !is.null(inits) && (length(inits) != n.chains)) {
     stop("Number of initialized chains (length(inits)) != n.chains")
   }
@@ -96,25 +96,25 @@ jags <- function( data, inits,
   if(missing(inits)){
     for (i in 1:n.chains){
         init.values[[i]]$.RNG.name <- RNGname
-        init.values[[i]]$.RNG.seed <- abs(.Random.seed[i+1])
+        init.values[[i]]$.RNG.seed <- runif(1, 0, 2^31)#abs(.Random.seed[i+1])
     }
   } else if (is.null(inits)){
       for (i in 1:n.chains){
         init.values[[i]]$.RNG.name <- RNGname
-        init.values[[i]]$.RNG.seed <- abs(.Random.seed[i+1])
+        init.values[[i]]$.RNG.seed <- runif(1, 0, 2^31)#abs(.Random.seed[i+1])
       }
   } else if (is.function(inits)){
       if (any(names(formals(inits)) == "chain")){
         for (i in 1:n.chains){
           init.values[[i]] <- inits(chain = i)
           init.values[[i]]$.RNG.name <- RNGname
-          init.values[[i]]$.RNG.seed <- abs(.Random.seed[i+1])
+          init.values[[i]]$.RNG.seed <- runif(1, 0, 2^31)#abs(.Random.seed[i+1])
         }
       } else{
           for (i in 1:n.chains){
             init.values[[i]] <- inits()
             init.values[[i]]$.RNG.name <- RNGname
-            init.values[[i]]$.RNG.seed <- abs(.Random.seed[i+1])
+            init.values[[i]]$.RNG.seed <- runif(1, 0, 2^31)#abs(.Random.seed[i+1])
           }
       }
   } else {
@@ -126,53 +126,53 @@ jags <- function( data, inits,
       stop("Number of initialized chains (length(inits)) != n.chains")
     }
     for (i in 1:n.chains){
-      init.values[[i]] <- inits[[i]]  
+      init.values[[i]] <- inits[[i]]
       init.values[[i]]$.RNG.name <- RNGname
       init.values[[i]]$.RNG.seed <- abs(.Random.seed[i+1])
     }
    }
-      
-  
+
+
 #  if( is.null( inits ) ){
-#    m <- jags.model( model.file, 
+#    m <- jags.model( model.file,
 #                     data     = data,
-#                     n.chains = n.chains, 
+#                     n.chains = n.chains,
 #                     n.adapt  = 0 )
-#  } else{ 
-    
-  m <- jags.model(model.file, 
-                  data     = data, 
-                  inits    = init.values, 
-                  n.chains = n.chains, 
+#  } else{
+
+  m <- jags.model(model.file,
+                  data     = data,
+                  inits    = init.values,
+                  n.chains = n.chains,
                   n.adapt  = 0 )
   #}
-  adapt( m, 
-         n.iter         = n.adapt, 
-         by             = refresh, 
-         progress.bar   = progress.bar, 
-         end.adaptation = TRUE ) 
+  adapt( m,
+         n.iter         = n.adapt,
+         by             = refresh,
+         progress.bar   = progress.bar,
+         end.adaptation = TRUE )
 
-  samples <- coda.samples( model          = m, 
-                           variable.names = parameters.to.save, 
-                           n.iter         = ( n.iter - n.burnin ), 
-                           thin           = n.thin, 
-                           by             = refresh, 
+  samples <- coda.samples( model          = m,
+                           variable.names = parameters.to.save,
+                           n.iter         = ( n.iter - n.burnin ),
+                           thin           = n.thin,
+                           by             = refresh,
                            progress.bar   = progress.bar )
 
-  fit <- mcmc2bugs( samples, 
-                    model.file = model.file, 
-                    program    = "jags", 
-                    DIC        = DIC, 
-                    DICOutput  = NULL, 
-                    n.iter     = n.iter, 
-                    n.burnin   = n.burnin, 
+  fit <- mcmc2bugs( samples,
+                    model.file = model.file,
+                    program    = "jags",
+                    DIC        = DIC,
+                    DICOutput  = NULL,
+                    n.iter     = n.iter,
+                    n.burnin   = n.burnin,
                     n.thin     = n.thin )
 
-  out <- list( model              = m, 
-               BUGSoutput         = fit, 
-               parameters.to.save = parameters.to.save, 
-               model.file         = model.file, 
-               n.iter             = n.iter, 
+  out <- list( model              = m,
+               BUGSoutput         = fit,
+               parameters.to.save = parameters.to.save,
+               model.file         = model.file,
+               n.iter             = n.iter,
                DIC                = DIC)
 
   class(out) <- "rjags"

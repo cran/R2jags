@@ -1,4 +1,4 @@
-as.bugs.array2 <- function(sims.array, model.file=NULL, program="jags", 
+as.bugs.array2 <- function(sims.array, model.file=NULL, program="jags",
               DIC=FALSE, DICOutput=NULL, n.iter=NULL, n.burnin=0, n.thin=1)
 {
   ## 'sims.array' is supposed to be a 3-way array with
@@ -79,14 +79,14 @@ as.bugs.array2 <- function(sims.array, model.file=NULL, program="jags",
   dimnames(sims) <- list(NULL, parameter.names)
   summary <- monitor(sims.array, n.chains, keep.all = TRUE)
   last.values <- as.list(numeric(n.chains))
-  
+
   for(nn in 1:length(n.indexes.short)){
     if(is.null(n.indexes.short[[nn]])){
       n.indexes.short[[nn]] <- 1
     }
   }
-  
-  
+
+
   for (i in 1:n.chains) {
     n.roots.0 <- if (DIC){
                    n.roots - 1
@@ -130,9 +130,9 @@ as.bugs.array2 <- function(sims.array, model.file=NULL, program="jags",
       summary.sd[[j]] <- aperm(array(summary[long.short[[j]], "sd"], rev(n.indexes.short[[j]])), temp2)
       summary.median[[j]] <- aperm(array(summary[long.short[[j]], "50%"], rev(n.indexes.short[[j]])), temp2)
       ##ell: added 025 and 975
-#      summary.025[[j]] <- aperm(array(summary[long.short[[j]], "2.5%"], rev(n.indexes.short[[j]])), temp2)     
+#      summary.025[[j]] <- aperm(array(summary[long.short[[j]], "2.5%"], rev(n.indexes.short[[j]])), temp2)
 #      summary.975[[j]] <- aperm(array(summary[long.short[[j]], "97.5%"], rev(n.indexes.short[[j]])), temp2)
-    } 
+    }
     if (program=="jags") {
       ##fix this list
       #sims.list[[j]] <- aperm(array(sims[, long.short[[j]]], c(n.sims, rev(n.indexes.short[[j]]))), c(1, (dimension.short[j] + 1):2))
@@ -148,13 +148,14 @@ as.bugs.array2 <- function(sims.array, model.file=NULL, program="jags",
   }
   summary <- summary[rank.long, ]
   #all <- list(n.chains = n.chains, n.iter = n.iter, n.burnin = n.burnin,
-#        n.thin = n.thin, n.keep = n.keep, n.sims = n.sims, 
+#        n.thin = n.thin, n.keep = n.keep, n.sims = n.sims,
 #        sims.array = sims.array[, , rank.long, drop = FALSE], sims.list = sims.list,
 #        sims.matrix = sims[, rank.long], summary = summary, mean = summary.mean,
 #        sd = summary.sd, median = summary.median, root.short = root.short,
 #        long.short = long.short, dimension.short = dimension.short,
-#        indexes.short = indexes.short, last.values = last.values, 
+#        indexes.short = indexes.short, last.values = last.values,
 #        is.DIC=DIC, p02.5=summary.025, p97.5=summary.975)
+
   all <- list(n.chains = n.chains, n.iter = n.iter, n.burnin = n.burnin,
       n.thin = n.thin, n.keep = n.keep, n.sims = n.sims,
       sims.array = sims.array[,,rank.long,drop = FALSE], sims.list = sims.list,
@@ -163,7 +164,6 @@ as.bugs.array2 <- function(sims.array, model.file=NULL, program="jags",
       long.short = long.short, dimension.short = dimension.short,
       indexes.short = indexes.short, last.values = last.values, program=program,
       model.file=model.file)
-
 
   if(DIC && is.null(DICOutput)) { ## calculate DIC from deviance
     deviance <- all$sims.array[, , "deviance", drop = FALSE]
@@ -175,12 +175,12 @@ as.bugs.array2 <- function(sims.array, model.file=NULL, program="jags",
       DIC[i] <- mean(deviance[, i]) + pD[i]
     }
     all <- c(all, list(isDIC=TRUE, DICbyR=TRUE,  pD=mean(pD), DIC=mean(DIC)))
-  } 
+  }
   else if(DIC && !is.null(DICOutput)) { ## use DIC from BUGS
     all <- c(all, list(isDIC=TRUE, DICbyR=FALSE,
                        pD=DICOutput[nrow(DICOutput),4],
                        DIC=DICOutput[nrow(DICOutput),3]))
-  } 
+  }
   else {
     all <- c(all, isDIC=FALSE)
   }

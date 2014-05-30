@@ -4,17 +4,18 @@ jags.parallel <- function (data, inits, parameters.to.save, model.file = "model.
                            n.thin = max(1, floor((n.iter - n.burnin)/1000)),
                            n.cluster = n.chains, DIC = TRUE,
                            working.directory = NULL, jags.seed = 123, digits = 5,
-                            RNGname = c("Wichmann-Hill", "Marsaglia-Multicarry", "Super-Duper", "Mersenne-Twister")
+                           RNGname = c("Wichmann-Hill", "Marsaglia-Multicarry", "Super-Duper", "Mersenne-Twister"),
+                           envir = .GlobalEnv
                             )
 {
   jags.params <- parameters.to.save
   jags.inits  <- if(missing(inits)){ NULL} else{inits}
   jags.model  <- model.file
-  
+
   .runjags <- function() {
     jagsfit <- jags(data               = eval(expression(data)),
                     inits              = jags.inits,
-                    parameters.to.save = eval(expression(jags.params)), 
+                    parameters.to.save = eval(expression(jags.params)),
                     model.file         = eval(expression(jags.model)),
                     n.chains           = 1,
                     n.iter             = eval(expression(n.iter)),
@@ -31,7 +32,7 @@ jags.parallel <- function (data, inits, parameters.to.save, model.file = "model.
   }
 
   cl <- makeCluster( n.cluster, methods = FALSE )
-  clusterExport(cl, c(data, "mcmc", "mcmc.list"))
+  clusterExport(cl, c(data, "mcmc", "mcmc.list"), envir = envir)
   clusterSetRNGStream(cl, jags.seed)
   tryCatch( res <- clusterCall(cl,.runjags), finally = stopCluster(cl) )
   #adim    <- dim( res[[1]]$BUGSoutput$sims.array )
@@ -41,11 +42,15 @@ jags.parallel <- function (data, inits, parameters.to.save, model.file = "model.
      result <- abind(result, res[[ch]]$BUGSoutput$sims.array, along=2)
      model[[ch]] <- res[[ch]]$model
   }
-  result <- as.bugs.array2(result, model.file=model.file, program="jags", DIC=DIC, 
+  if(is.function(model.file)){
+    model.file <- substitute(model.file)
+  }
+  result <- as.bugs.array2(result, model.file=model.file, program="jags", DIC=DIC,
       n.iter=n.iter, n.burnin=n.burnin, n.thin=n.thin)
   #res[[1]]$model$nchain <- n.chains
-  out <- list(model = model, BUGSoutput = result, parameters.to.save = parameters.to.save, 
-      model.file = model.file, n.iter = n.iter, DIC = DIC) 
+  out <- list(model = model, BUGSoutput = result, parameters.to.save = parameters.to.save,
+      model.file = model.file, n.iter = n.iter, DIC = DIC)
   class(out) <- c("rjags.parallel", "rjags")
+
   return(out)
 }
