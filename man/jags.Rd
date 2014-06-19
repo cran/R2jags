@@ -23,7 +23,8 @@ jags(data, inits, parameters.to.save, model.file="model.bug",
   DIC=TRUE, working.directory=NULL, jags.seed = 123,
   refresh = n.iter/50, progress.bar = "text", digits=5,
   RNGname = c("Wichmann-Hill", "Marsaglia-Multicarry",
-              "Super-Duper", "Mersenne-Twister")
+              "Super-Duper", "Mersenne-Twister"),
+  jags.module = c("glm","dic")
   )
 
 jags.parallel(data, inits, parameters.to.save, model.file = "model.bug",
@@ -33,6 +34,7 @@ jags.parallel(data, inits, parameters.to.save, model.file = "model.bug",
              working.directory = NULL, jags.seed = 123, digits=5,
              RNGname = c("Wichmann-Hill", "Marsaglia-Multicarry",
               "Super-Duper", "Mersenne-Twister"),
+             jags.module = c("glm","dic"),
              envir = .GlobalEnv
              )
 
@@ -83,8 +85,7 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
     and DIC. The rule \code{pD=var(deviance) / 2} is used.}
   \item{working.directory}{sets working directory during execution of
     this function; This should be the directory where model file is.}
-  \item{jags.seed}{random seed for \code{JAGS}, default is 123.  This function is used for
-    jags.parallell() and does not work for jags().  Use set.seed() instead if you want to produce   identical result with jags() }.
+  \item{jags.seed}{random seed for \code{JAGS}, default is 123.  This function is used for jags.parallell() and does not work for jags().  Use set.seed() instead if you want to produce identical result with jags() }.
   \item{jags.path}{directory that contains the \code{JAGS} executable.
     The default is \dQuote{}.  }
   \item{clearWD}{indicating whether the files \file{data.txt},
@@ -102,6 +103,7 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   \item{RNGname}{the name for random number generator used in JAGS. There are four RNGS
   supplied by the base moduale in JAGS: \code{Wichmann-Hill}, \code{Marsaglia-Multicarry},
   \code{Super-Duper}, \code{Mersenne-Twister}}
+  \item{jags.module}{the vector of jags modules to be loaded.  Default are \dQuote{glm} and \dQuote{dic}. Input NULL if you don't want to load any jags module.}
   \item{envir}{default is .GlobalEnv}
 }
 

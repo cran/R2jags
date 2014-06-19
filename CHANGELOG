@@ -1,3 +1,7 @@
+2014-6-19 Yu-Sung Su <suyusung@tsinghua.edu.cn>
+    * DESCRIPTION (Version, Date): 0.04-03
+    * R/jags: add parameters jags.module to handle module to be loaded.
+
 2014-5-30 Yu-Sung Su <suyusung@tsinghua.edu.cn>
     * DESCRIPTION (Version, Date): 0.04-02
     * R/jags: update the method for generating Random.seed in jags()
