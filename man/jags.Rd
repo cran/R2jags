@@ -35,6 +35,7 @@ jags.parallel(data, inits, parameters.to.save, model.file = "model.bug",
              RNGname = c("Wichmann-Hill", "Marsaglia-Multicarry",
               "Super-Duper", "Mersenne-Twister"),
              jags.module = c("glm","dic"),
+             export_obj_names=NULL, 
              envir = .GlobalEnv
              )
 
@@ -104,7 +105,9 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   supplied by the base moduale in JAGS: \code{Wichmann-Hill}, \code{Marsaglia-Multicarry},
   \code{Super-Duper}, \code{Mersenne-Twister}}
   \item{jags.module}{the vector of jags modules to be loaded.  Default are \dQuote{glm} and \dQuote{dic}. Input NULL if you don't want to load any jags module.}
+  \item{export_obj_names}{character vector of objects to export to the clusters.}
   \item{envir}{default is .GlobalEnv}
+
 }
 
 

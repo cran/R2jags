@@ -1,3 +1,7 @@
+2015-1-9 Yu-Sung Su <suyusung@tsinghua.edu.cn>
+    * man/jags: add description for export_obj_name.
+    * R/jagsParallel: add new parameter export_obj_name. Allow users to export other objects to the cluster.
+
 2014-6-19 Yu-Sung Su <suyusung@tsinghua.edu.cn>
     * DESCRIPTION (Version, Date): 0.04-03
     * R/jags: add parameters jags.module to handle module to be loaded.
