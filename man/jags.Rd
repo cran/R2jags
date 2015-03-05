@@ -9,7 +9,7 @@
 \alias{jags.parallel}
 
 
-\title{Run jags from R}
+\title{Run \sQuote{JAGS} from R}
 \description{
   The \code{jags} function takes data and starting values as input.  It
   automatically writes a \code{jags} script, calls the model, and
@@ -35,7 +35,7 @@ jags.parallel(data, inits, parameters.to.save, model.file = "model.bug",
              RNGname = c("Wichmann-Hill", "Marsaglia-Multicarry",
               "Super-Duper", "Mersenne-Twister"),
              jags.module = c("glm","dic"),
-             export_obj_names=NULL, 
+             export_obj_names=NULL,
              envir = .GlobalEnv
              )
 
@@ -238,8 +238,9 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   jagsfit.mcmc <- as.mcmc(jagsfit.p)
   jagsfit.mcmc <- as.mcmc(jagsfit)
   ## now we can use the plotting methods from coda
-  xyplot(jagsfit.mcmc)
-  densityplot(jagsfit.mcmc)
+  #require(lattice)
+  #xyplot(jagsfit.mcmc)
+  #densityplot(jagsfit.mcmc)
 
   # if the model does not converge, update it!
   jagsfit.upd <- update(jagsfit, n.iter=100)
@@ -296,8 +297,9 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
     # use as.mcmmc to convert rjags object into mcmc.list
     jagsfit.mcmc <- as.mcmc.list(jagsfit)
     traceplot(jagsfit.mcmc)
-    xyplot(jagsfit.mcmc)
-    densityplot(jagsfit.mcmc)
+    #require(lattice)
+    #xyplot(jagsfit.mcmc)
+    #densityplot(jagsfit.mcmc)
   }
 
 }

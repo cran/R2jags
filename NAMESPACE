@@ -13,12 +13,12 @@ import(parallel)
 
 importFrom(R2WinBUGS, "attach.bugs",
                       "detach.bugs",
-                      "write.model", 
+                      "write.model",
                       "monitor")
 
 exportClasses(
               "rjags",
-              "rjags.parallel"             
+              "rjags.parallel"
               )
 
 exportMethods(

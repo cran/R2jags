@@ -1,3 +1,6 @@
+2015-3-5 Yu-Sung Su <suyusung@tsinghua.edu.cn>
+    * man/jags: comment out xyplot and densityplot from example code to avoid from importing lattice library.
+
 2015-1-9 Yu-Sung Su <suyusung@tsinghua.edu.cn>
     * man/jags: add description for export_obj_name.
     * R/jagsParallel: add new parameter export_obj_name. Allow users to export other objects to the cluster.

@@ -1,6 +1,6 @@
 # copy from coda
 
-as.mcmc.rjags <- function (x) {
+as.mcmc.rjags <- function (x, ...) {
   x <- x$BUGSoutput
   mclist <- vector("list", x$n.chains)
   mclis <- vector("list", x$n.chains)
