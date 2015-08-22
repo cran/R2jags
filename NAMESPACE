@@ -1,5 +1,12 @@
 importFrom(methods, "setOldClass")
 
+
+importFrom(graphics, "axis", "lines", "matplot", "par", "plot", "title")
+importFrom(grDevices, rainbow)
+importFrom(stats, "lowess", "quantile", "runif", "sd", "time", "update", "var")
+importFrom(utils, "read.table")
+
+
 importFrom(rjags, "jags.model",
                   "coda.samples",
                   "load.module",
@@ -7,7 +14,7 @@ importFrom(rjags, "jags.model",
 
 importFrom(abind, "abind")
 
-importFrom(coda, "as.mcmc", "mcmc", "as.mcmc.list", "traceplot")
+importFrom(coda, "as.mcmc", "mcmc", "nvar", "varnames", "nchain", "as.mcmc.list", "traceplot")
 
 import(parallel)
 

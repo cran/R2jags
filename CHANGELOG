@@ -1,3 +1,9 @@
+2015-8-22 Yu-Sung Su <suyusung@tsinghua.edu.cn>
+    * DESCRIPTION (Version, Date): 0.5-6
+    * NAMESPACE: add more import
+    * R/jagsParalle: pass data into Glob.env
+
+
 2015-4-19 Yu-Sung Su <suyusung@tsinghua.edu.cn>
     * DESCRIPTION (Version, Date): 0.5-5
     * DESCRIPTION: SystemRequirements: JAGS (http://mcmc-jags.sourceforge.net)
