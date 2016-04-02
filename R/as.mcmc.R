@@ -6,7 +6,7 @@ as.mcmc.rjags <- function (x, ...) {
   mclis <- vector("list", x$n.chains)
   strt <- x$n.burnin + 1
   end <- x$n.iter
-  ord <- order(dimnames(x$sims.array)[[3]])
+  ord <- dimnames(x$sims.array)[[3]]
   for (i in 1:x$n.chains) {
     tmp1 <- x$sims.array[, i, ord]
     mclis[[i]] <- mcmc(tmp1, start = strt, end = end, thin = x$n.thin)
