@@ -48,6 +48,7 @@ jags.parallel <- function (data, inits, parameters.to.save, model.file = "model.
 
 
     .runjags <- function() {
+        requireNamespace("coda")
         jagsfit <- jags(data = eval(expression(data)), inits = jags.inits,
             parameters.to.save = eval(expression(jags.params)),
             model.file = eval(expression(jags.model)), n.chains = 1,
