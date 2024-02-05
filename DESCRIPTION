@@ -1,5 +1,5 @@
 Package: R2jags
-Version: 0.7-1
+Version: 0.7-1.1
 Date: 2021-08-05
 Title: Using R to Run 'JAGS'
 Author: Yu-Sung Su <suyusung@tsinghua.edu.cn>,
@@ -16,6 +16,6 @@ RoxygenNote: 7.1.1
 Suggests: testthat (>= 3.0.0)
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2021-08-05 00:30:23 UTC; yusung
+Packaged: 2024-02-04 20:09:16 UTC; ripley
 Repository: CRAN
-Date/Publication: 2021-08-05 04:20:38 UTC
+Date/Publication: 2024-02-05 08:15:27 UTC
