@@ -24,7 +24,8 @@ jags(data, inits, parameters.to.save, model.file="model.bug",
   refresh = n.iter/50, progress.bar = "text", digits=5,
   RNGname = c("Wichmann-Hill", "Marsaglia-Multicarry",
               "Super-Duper", "Mersenne-Twister"),
-  jags.module = c("glm","dic"), quiet = FALSE
+  jags.module = c("glm","dic"), quiet = FALSE,
+  checkMissing = FALSE
   )
 
 jags.parallel(data, inits, parameters.to.save, model.file = "model.bug",
@@ -108,6 +109,8 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   \item{export_obj_names}{character vector of objects to export to the clusters.}
   \item{envir}{default is .GlobalEnv}
   \item{quiet}{Logical, whether to suppress stdout in \code{jags.model()}.}
+  \item{checkMissing}{Default: FALSE. When TRUE, checks for missing data in categorical parameters 
+  and returns a \code{sim.list} with NA values if detected. It's recommended to supply \code{jags()} with complete data.}
 }
 
 
@@ -115,7 +118,7 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
 \details{
   To run:
   \enumerate{
-    \item Write a \code{BUGS} model in an ASCII file.
+    \item Write a \code{JAGS} model in an ASCII file.
     \item Go into \R.
     \item Prepare the inputs for the \code{jags} function and run it (see
       Example section).
@@ -123,22 +126,22 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
       will see things happening in the R console.
   }
 
-  BUGS version support:
-  \itemize{
-    \item{\pkg{jags} 1.0.3}{default}
-  }
+%  BUGS version support:
+%  \itemize{
+%    \item \pkg{jags} 1.0.3 {default}
+% }
 }
 
 \author{
   Yu-Sung Su \email{suyusung@tsinghua.edu.cn},
-  Masanao Yajima \email{yajima@stat.columbia.edu}
+  Masanao Yajima \email{yajima@bu.edu}
 }
 
 
 \references{
     Plummer, Martyn (2003)
     \dQuote{JAGS: A program for analysis of Bayesian graphical models using Gibbs sampling.}
-    \url{http://citeseer.ist.psu.edu/plummer03jags.html}.
+    \url{https://www.r-project.org/conferences/DSC-2003/Proceedings/Plummer.pdf}.
 
     Gelman, A., Carlin, J. B., Stern, H.S., Rubin, D.B. (2003)
     \emph{Bayesian Data Analysis}, 2nd edition, CRC Press.
