@@ -20,7 +20,8 @@
 jags(data, inits, parameters.to.save, model.file="model.bug",
   n.chains=3, n.iter=2000, n.burnin=floor(n.iter/2),
   n.thin=max(1, floor((n.iter - n.burnin) / 1000)),
-  DIC=TRUE, working.directory=NULL, jags.seed = 123,
+  DIC=TRUE, pD = FALSE, n.iter.pd = NULL, n.adapt = 100,
+  working.directory=NULL, jags.seed = 123,
   refresh = n.iter/50, progress.bar = "text", digits=5,
   RNGname = c("Wichmann-Hill", "Marsaglia-Multicarry",
               "Super-Duper", "Mersenne-Twister"),
@@ -63,7 +64,7 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   \item{model.file}{file containing the model written in \code{BUGS}
   code. Alternatively, as in \pkg{R2WinBUGS}, \code{model.file} can be an R
   function that contains a \code{BUGS} model that is written to a
-  temporary model file (see \code{\link{tempfile}}) using \code{\link{write.model}}}
+  temporary model file (see \code{tempfile}) using \code{write.model}}
   \item{n.chains}{number of Markov chains (default: 3)}
   \item{n.iter}{number of total iterations per chain (including burn in;
     default: 2000)}
@@ -85,6 +86,13 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
 %          iterations and then the adaptive mode is switched off.}
   \item{DIC}{logical; if \code{TRUE} (default), compute deviance, pD,
     and DIC. The rule \code{pD=var(deviance) / 2} is used.}
+  \item{pD}{logical; if \code{TRUE} and \code{DIC} is also \code{TRUE}, then
+    adds the computation of 'pD', using 'rjags::dic.samples()'. Defaults to
+    \code{FALSE}.}
+  \item{n.iter.pd}{number of iterations to feed 'rjags::dic.samples()' to
+    compute 'pD'. Defaults at 1000.}
+  \item{n.adapt}{number of iterations for which to run the adaptation, when
+    creating the model object. Defaults at 100.}
   \item{working.directory}{sets working directory during execution of
     this function; This should be the directory where model file is.}
   \item{jags.seed}{random seed for \code{JAGS}, default is 123.  This function is used for jags.parallell() and does not work for jags().  Use set.seed() instead if you want to produce identical result with jags() }.
@@ -100,7 +108,7 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
       on the R console. Type \dQuote{gui} is a graphical progress bar
       in a new window. The progress bar is suppressed if \code{progress.bar} is
       \dQuote{none}}
-    \item{digits}{as in \code{\link{write.model}} in the \pkg{R2WinBUGS} package:  number of significant digits used for
+    \item{digits}{as in \code{write.model} in the \pkg{R2WinBUGS} package:  number of significant digits used for
   \code{BUGS} input, see \code{\link{formatC}}.  Only used if specifying  a \code{BUGS} model as an R function.}
   \item{RNGname}{the name for random number generator used in JAGS. There are four RNGS
   supplied by the base moduale in JAGS: \code{Wichmann-Hill}, \code{Marsaglia-Multicarry},
@@ -134,7 +142,8 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
 
 \author{
   Yu-Sung Su \email{suyusung@tsinghua.edu.cn},
-  Masanao Yajima \email{yajima@bu.edu}
+  Masanao Yajima \email{yajima@bu.edu},
+  Gianluca Baio \email{g.baio@ucl.ac.uk}
 }
 
 
@@ -222,12 +231,18 @@ jags2(data, inits, parameters.to.save, model.file="model.bug",
   jagsfit <- jags(data=jags.data, inits=jags.inits, jags.params,
     n.iter=5000, model.file=model.file)
 
+  # Can also compute the DIC using pD (=Dbar-Dhat), via dic.samples(), which
+  # is a closer approximation to the original formulation of Spiegelhalter et
+  # al (2002), instead of pV (=var(deviance)/2), which is the default in JAGS
+   jagsfit.pD <- jags(data=jags.data, inits=jags.inits, jags.params,
+     n.iter=5000, model.file=model.file, pD=TRUE)
+
   # Run jags parallely, no progress bar. R may be frozen for a while,
   # Be patient. Currenlty update afterward does not run parallelly
   #
    jagsfit.p <- jags.parallel(data=jags.data, inits=jags.inits, jags.params,
      n.iter=5000, model.file=model.file)
-
+  
   # display the output
   print(jagsfit)
   plot(jagsfit)
